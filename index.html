@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ForgePIE bêta - Tests</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Palette = forgepie/hub/kit.py */
+:root{
+  --bg:#0B1226;--panel:#101A33;--raised:#16223F;--line:#1F2D52;--line2:#7088C4;
+  --tx:#F0F4FF;--tx2:#AAB6D8;--dim:#8896BE;
+  --cy:#00D8FF;--ok:#2FE39A;--warn:#FFB547;--err:#FF5D7A;--ink:#04101C;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--tx);font:400 15px/1.55 Poppins,system-ui,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:left}
+:focus-visible{outline:2px solid var(--cy);outline-offset:2px;border-radius:6px}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+
+/* En-tête */
+header{padding:40px 0 24px}
+.top{display:grid;grid-template-columns:1fr 220px;gap:32px;align-items:center}
+h1{margin:0 0 8px;font-size:34px;line-height:1.15;font-weight:600;letter-spacing:-.01em}
+.lead{margin:0 0 20px;color:var(--tx2);max-width:46ch}
+.q{margin:0 0 8px;font-weight:600}
+.seg{display:inline-flex;gap:4px;padding:4px;background:var(--panel);border:1px solid var(--line);border-radius:12px;position:relative}
+.seg label{position:relative;z-index:1}
+.seg input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.seg span{display:block;padding:8px 14px;border-radius:8px;color:var(--tx2);transition:color .25s,background .25s}
+.seg input:checked+span{background:var(--cy);color:var(--ink);font-weight:600}
+.seg input:focus-visible+span{outline:2px solid var(--cy);outline-offset:2px}
+
+/* Anneau PIE */
+.ring{position:relative;width:220px;height:220px}
+.ring svg{width:100%;height:100%;overflow:visible}
+.sl{fill:var(--raised);stroke:var(--bg);stroke-width:2;cursor:pointer;transition:fill .4s var(--ease),transform .25s var(--ease);transform-origin:100px 100px}
+.rcol{width:220px}
+.legw{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px;color:var(--dim)}
+.leg{display:flex;flex:1;gap:3px}
+.leg i{flex:1;height:8px;border-radius:4px}
+.legt{margin:4px 0 0;text-align:center}
+.sl:hover{transform:scale(1.04)}
+.sl.cur,.sl:focus-visible{stroke:var(--cy);stroke-width:3;outline:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ring .mid{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;text-align:center}
+.mid b{font-size:30px;font-weight:600;line-height:1}
+.mid small{display:block;color:var(--dim);font-size:12px}
+
+/* Onglets et infos */
+header{padding:40px 0 0}
+.tabs{display:flex;gap:4px;margin-top:20px;border-bottom:1px solid var(--line)}
+.tabs button{padding:10px 18px;color:var(--tx2);border-bottom:3px solid transparent;margin-bottom:-1px;border-radius:8px 8px 0 0;transition:color .25s,border-color .25s,background .25s}
+.tabs button:hover{background:var(--panel);color:var(--tx)}
+.tabs button[aria-selected=true]{color:var(--cy);border-bottom-color:var(--cy);font-weight:600}
+.panel{padding-top:24px}
+.panel.on{animation:pin .4s var(--ease)}
+@keyframes pin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.alert{padding:20px 22px;margin-bottom:12px;background:rgba(255,181,71,.1);border:1px solid var(--warn);border-radius:14px}
+.alert h2,.info h2{margin:0 0 8px;font-size:18px;font-weight:600}
+.alert h2{color:var(--warn)}
+.alert p,.info p{margin:0 0 8px;max-width:62ch}
+.alert p:last-child,.info p:last-child{margin:0}
+.info{padding:18px 22px;margin-bottom:12px;background:var(--panel);border:1px solid var(--line);border-radius:14px}
+.info ul{margin:0;padding-left:20px;max-width:62ch}.info li{margin:4px 0}
+.go{margin:12px 0 56px}
+[hidden]{display:none!important}
+
+/* Groupes et tests */
+.grp{margin:0 0 12px;background:var(--panel);border:1px solid var(--line);border-radius:14px;transition:border-color .3s}
+.grp.rec{border-color:var(--line2)}
+.gh{display:flex;align-items:center;gap:12px;width:100%;padding:16px 18px}
+.gh h2{margin:0;font-size:17px;font-weight:600;flex:1}
+.chip{padding:2px 10px;border-radius:999px;font-size:12px;background:rgba(0,216,255,.14);color:var(--cy);opacity:0;transform:scale(.8);transition:opacity .3s,transform .3s var(--ease)}
+.rec .chip{opacity:1;transform:none}
+.cnt{color:var(--dim);font-size:13px;font-variant-numeric:tabular-nums}
+.chev{width:18px;height:18px;flex:none;color:var(--dim);transition:transform .35s var(--ease)}
+.open>.gh .chev,.open>.th .chev{transform:rotate(180deg);color:var(--cy)}
+.collapse{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s var(--ease)}
+.open>.collapse{grid-template-rows:1fr}
+.collapse>.inner{overflow:hidden;min-height:0;opacity:0;transition:opacity .3s}
+.open>.collapse>.inner{opacity:1;transition-delay:.08s}
+.tests{padding:0 10px 10px;display:grid;gap:6px}
+
+.test{background:var(--raised);border:1px solid transparent;border-radius:10px;transition:border-color .3s,background .3s}
+.test.open{border-color:var(--line2)}
+.th{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px}
+.id{flex:none;width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-weight:600;font-size:13px;background:var(--bg);color:var(--cy);border:1px solid var(--line);transition:background .3s,color .3s,border-color .3s}
+.test.done .id{background:var(--cy);color:var(--ink);border-color:var(--cy)}
+.test.part .id{border-color:var(--cy)}
+.tt{flex:1;min-width:0}
+.tt b{display:block;font-weight:600}
+.tt small{display:block;color:var(--dim);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prog{flex:none;width:56px;height:4px;border-radius:2px;background:var(--line);overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:var(--cy);transition:width .4s var(--ease)}
+.body{padding:4px 16px 18px 16px}
+
+/* Étapes */
+.steps{list-style:none;margin:0 0 18px;padding:0}
+.steps label{display:flex;gap:12px;align-items:flex-start;padding:8px 0;cursor:pointer}
+.steps input{position:absolute;opacity:0}
+.box{flex:none;width:22px;height:22px;margin-top:1px;border-radius:7px;border:2px solid var(--line2);display:grid;place-items:center;transition:background .2s,border-color .2s,transform .2s var(--ease)}
+.box svg{width:14px;height:14px;stroke:var(--ink);stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:20;stroke-dashoffset:20;transition:stroke-dashoffset .3s var(--ease)}
+.steps input:checked+.box{background:var(--ok);border-color:var(--ok);transform:scale(1.05)}
+.steps input:checked+.box svg{stroke-dashoffset:0}
+.steps input:focus-visible+.box{outline:2px solid var(--cy);outline-offset:2px}
+.steps .tx{transition:color .25s}
+.steps input:checked~.tx{color:var(--dim);text-decoration:line-through;text-decoration-color:rgba(136,150,190,.5)}
+
+/* Champs */
+.f{margin:0 0 16px;border:0;padding:0}
+.f legend,.f .lab{display:block;margin:0 0 8px;font-weight:600;font-size:14px;padding:0}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.pill{position:relative}
+.pill input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.pill span{display:block;padding:8px 14px;border-radius:10px;border:1px solid var(--line2);background:var(--bg);color:var(--tx2);transition:all .2s var(--ease)}
+.pill:hover span{border-color:var(--cy)}
+.pill input:checked+span{background:var(--cy);border-color:var(--cy);color:var(--ink);font-weight:600}
+.pill input[value=non]:checked+span{background:var(--err);border-color:var(--err)}
+.pill input[value=difficulte]:checked+span{background:var(--warn);border-color:var(--warn)}
+.pill input:focus-visible+span{outline:2px solid var(--cy);outline-offset:2px}
+.num span{min-width:44px;text-align:center;padding:8px 0}
+.hint{color:var(--dim);font-size:13px}
+textarea,input[type=text]{width:100%;padding:10px 12px;background:var(--bg);color:var(--tx);border:1px solid var(--line2);border-radius:10px;font:inherit;transition:border-color .2s}
+textarea{min-height:88px;resize:vertical}
+textarea:focus,input[type=text]:focus{outline:none;border-color:var(--cy);box-shadow:0 0 0 3px rgba(0,216,255,.18)}
+::placeholder{color:var(--dim)}
+
+/* Bilan */
+.fbody{padding:0 18px 18px}
+.fbody .sub{margin:0 0 18px;color:var(--tx2)}
+.fin{margin-bottom:64px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.btn{padding:10px 18px;border-radius:10px;border:1px solid var(--line2);transition:all .2s var(--ease)}
+.btn:hover{border-color:var(--cy)}
+.btn.pri{background:var(--cy);border-color:var(--cy);color:var(--ink);font-weight:600}
+.btn.pri:hover{transform:translateY(-1px)}
+
+@media (max-width:680px){
+  .top{grid-template-columns:1fr}
+  .rcol{margin:0 auto;order:-1;width:180px}
+  .ring{width:180px;height:180px}
+  h1{font-size:28px}
+  .prog{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <header>
+  <h1>ForgePIE bêta</h1>
+  <div class="tabs" role="tablist" aria-label="Sections">
+   <button role="tab" id="tab-infos" aria-controls="p-infos" aria-selected="true">Infos</button>
+   <button role="tab" id="tab-tests" aria-controls="p-tests" aria-selected="false" tabindex="-1">Les tests</button>
+  </div>
+ </header>
+
+ <section class="panel on" id="p-infos" role="tabpanel" aria-labelledby="tab-infos">
+  <div class="alert" role="note">
+   <h2>À lire avant de commencer</h2>
+   <p>Ta progression est enregistrée <b>dans ton navigateur, sur cet appareil</b>. Si tu vides ton cache, ou si tu changes d'appareil ou de navigateur, <b>tu perds tout</b>.</p>
+   <p>Avant de changer, clique sur « Copier mon bilan » (en bas de l'onglet Les tests) et garde le texte.</p>
+  </div>
+  <div class="info">
+   <h2>ForgePIE, c'est quoi ?</h2>
+   <p>Une extension Blender pour créer tes propres menus : circulaires (PIE) ou en liste classique. Tu actives des <b>modules</b> (des groupes de <b>composants</b> prêts à l'emploi, comme des outils UV ou des exports), puis tu les assembles dans tes menus. Le <b>Hub</b> est la fenêtre où tu fais tout ça : elle s'ouvre avec F6 dans Blender.</p>
+  </div>
+  <div class="info">
+   <h2>Télécharger la bêta</h2>
+   <p>Un seul zip : ForgePIE, quatre modules et le fichier INSTALL.txt. Dézippe-le, puis suis INSTALL.txt (ou le test A1).</p>
+   <a class="btn pri" style="display:inline-block;text-decoration:none" href="https://github.com/Ender501/forgepie-beta/releases/latest/download/forgepie-beta.zip" download>Télécharger forgepie-beta.zip</a>
+  </div>
+  <div class="info">
+   <h2>La bêta</h2>
+   <p>Elle dure environ deux semaines. On cherche tes retours sur l'utilité, le design et l'ergonomie. Tu n'as pas à tout tester : quelques tests et l'avis global comptent déjà. Ça peut casser, c'est normal : dis-nous ce qui s'est passé.</p>
+  </div>
+  <div class="info">
+   <h2>Comment tester</h2>
+   <ul>
+    <li>Choisis les tests qui t'intéressent, dans l'ordre que tu veux.</li>
+    <li>Ouvre un test, coche les étapes au fur et à mesure.</li>
+    <li>Note si ça a marché, la difficulté, et ce qui t'a bloqué ou surpris.</li>
+    <li>Donne ton avis global en bas, même si tu n'as fait que quelques tests.</li>
+    <li>Pour finir, clique sur « Copier mon bilan » et colle-le sur Discord.</li>
+   </ul>
+  </div>
+  <button class="btn pri go" id="gotests">Passer aux tests</button>
+ </section>
+
+ <section class="panel" id="p-tests" role="tabpanel" aria-labelledby="tab-tests" hidden>
+  <div class="top">
+   <div>
+    <p class="q" id="lq">Ton niveau avec Blender</p>
+    <div class="seg" role="radiogroup" aria-labelledby="lq" id="lvl"></div>
+   </div>
+   <div class="rcol"><div class="ring" id="ring" aria-label="Progression des tests"></div>
+    <div class="legw"><span>Facile</span><div class="leg" id="leg" aria-hidden="true"></div><span>Difficile</span></div>
+    <p class="hint legt">La couleur d'une part = ta note de difficulté</p></div>
+  </div>
+
+ <section class="grp" data-g="3" aria-label="Infos">
+  <button class="gh" aria-expanded="false"><h2>Infos</h2><span class="cnt"></span><svg class="chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8l5 5 5-5"/></svg></button>
+  <div class="collapse" inert><div class="inner"><div class="fbody">
+  <div class="f"><label class="lab" for="g_pseudo">Pseudo Discord (facultatif)</label><input type="text" id="g_pseudo" data-g="pseudo" autocomplete="nickname"><p class="hint">Pas obligatoire, mais ça nous permet de te recontacter pour des précisions.</p></div>
+  <div class="f"><label class="lab" for="g_blender">Version de Blender</label><input type="text" id="g_blender" data-g="blender" placeholder="5.2.3 LTS"><p class="hint">Clique sur le logo Blender tout en haut à gauche de la fenêtre, puis sur « About Blender » : la version est affichée en haut de la fenêtre qui s'ouvre (par exemple 5.2.3 LTS). Autre moyen : dans le Hub, onglet Diagnostics, bouton « Copy report » : la première ligne commence par « Blender 5.2… ».</p></div>
+  <div class="f"><label class="lab" for="g_gpu">Carte graphique (GPU)</label><input type="text" id="g_gpu" data-g="gpu" placeholder="NVIDIA RTX 3060"><p class="hint">Windows : ouvre le Gestionnaire des tâches (Ctrl + Maj + Échap), onglet « Performances », clique sur « GPU » : le nom de la carte est écrit en haut à droite (par exemple NVIDIA GeForce RTX 3060). Mac : menu Pomme > À propos de ce Mac.</p></div>
+  <fieldset class="f"><legend>Langue de l'interface de Blender</legend><div class="row" id="g_lang"></div></fieldset>
+  <div class="f"><label class="lab" for="g_conf">Système et taille d'écran</label><input type="text" id="g_conf" data-g="conf" placeholder="Windows 11, 1920×1080"></div>
+  <div class="f"><label class="lab" for="g_usage">Ce que tu fais surtout dans Blender</label><input type="text" id="g_usage" data-g="usage" placeholder="Modélisation, UV, animation…"></div>
+  <fieldset class="f"><legend>Tu utilises déjà des menus PIE ?</legend><div class="row" id="g_pie"></div></fieldset>
+  </div></div></div>
+ </section>
+
+ <main id="groups"></main>
+
+ <section class="grp fin" data-g="4" aria-label="Avis global">
+  <button class="gh" aria-expanded="false"><h2>Avis global</h2><span class="cnt"></span><svg class="chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8l5 5 5-5"/></svg></button>
+  <div class="collapse" inert><div class="inner"><div class="fbody">
+  <p class="sub">Tout est facultatif. Même après quelques tests, le reste nous aide beaucoup.</p>
+  <fieldset class="f"><legend>Utilité de l'outil pour toi</legend><div class="row num" id="g_util"></div><p class="hint">1 : aucune, 5 : indispensable</p></fieldset>
+  <fieldset class="f"><legend>Design</legend><div class="row num" id="g_design"></div><p class="hint">1 : à revoir, 5 : très réussi</p></fieldset>
+  <fieldset class="f"><legend>Ergonomie</legend><div class="row num" id="g_ergo"></div><p class="hint">1 : confus, 5 : tout coule de source</p></fieldset>
+  <fieldset class="f"><legend>Les mots « module », « composant » et « menu » sont clairs ?</legend><div class="row" id="g_vocab"></div></fieldset>
+  <fieldset class="f"><legend>Le Hub est assez lisible (taille du texte, contrastes) ?</legend><div class="row" id="g_read"></div></fieldset>
+  <div class="f"><label class="lab" for="g_bug">Le bug le plus gênant</label><textarea id="g_bug" data-g="bug"></textarea></div>
+  <div class="f"><label class="lab" for="g_want">Le module ou l'outil qui te manque</label><textarea id="g_want" data-g="want"></textarea></div>
+  <fieldset class="f"><legend>Tu l'utiliserais après la bêta ?</legend><div class="row" id="g_after"></div></fieldset>
+  <div class="f"><label class="lab" for="g_redo">Ce que tu ferais autrement</label><textarea id="g_redo" data-g="redo"></textarea></div>
+  <div class="bar"><button class="btn pri" id="send">Envoyer mon bilan</button><button class="btn" id="copy">Copier mon bilan</button><button class="btn" id="reset">Tout effacer</button></div>
+  </div></div></div>
+ </section>
+ </section>
+</div>
+
+<script>
+const LEVELS=["Débutant","Intermédiaire","Avancé"];
+const TESTS=[
+ {id:"A1",l:0,t:"Installer et ouvrir le Hub",d:"Premier contact avec l'outil",s:[
+  "Dans Blender 5.2 : Edit > Preferences > Get Extensions (même emplacement si ton Blender est en français), flèche en haut à droite > « Install from Disk… ». Choisis forgepie-0.1.0.zip et active l'extension (détail dans INSTALL.txt).",
+  "Installe de la même façon au moins deux modules (par exemple UV Toolkit et Modeling Essentials). Attention : le bouton « Import » du Hub n'accepte que des fichiers .json de module personnalisé, jamais ces zips.",
+  "Dans la vue 3D, appuie sur F6, ou clique sur le bouton ForgePIE de la barre latérale (N) : le Hub s'ouvre.",
+  "Vérifie les quatre pages : Discover (Découvrir), My modules (Mes modules), My menus (Mes menus), Diagnostics.",
+  "Ferme le Hub avec Échap, puis rouvre-le avec F6 dans l'éditeur UV."]},
+ {id:"A2",l:0,t:"Essayer le menu par défaut",d:"ForgePIE marche dès l'installation",s:[
+  "Hub fermé, souris dans la vue 3D, appuie sur F5 : un menu circulaire d'exemple s'affiche.",
+  "Lance une de ses entrées et vérifie son effet.",
+  "Ouvre son sous-menu (le module placé en entier) et lances-y une entrée."]},
+ {id:"A3",l:0,t:"Explorer Discover",d:"La bibliothèque de modules",s:[
+  "Ouvre Discover (Découvrir).",
+  "Appuie sur / pour aller dans la recherche, tape « uv », puis Échap pour vider la recherche.",
+  "Change le tri, puis passe de la grille à la liste et reviens.",
+  "Clique sur une carte pour ouvrir la fiche du module et parcours ses composants."]},
+ {id:"A4",l:0,t:"Activer un module",d:"Rendre un module disponible",s:[
+  "Un module tout juste installé arrive désactivé : active-le avec son interrupteur.",
+  "Mets-le en favori (étoile), puis retrouve-le dans My modules (Mes modules).",
+  "Désactive-le : il passe dans « Deactivated » (Désactivés). Réactive-le."]},
+ {id:"A5",l:0,t:"Créer un menu et le renommer",d:"Ton premier menu, vide",s:[
+  "Ouvre My menus (Mes menus) et clique sur « + New menu » (Nouveau menu) : le menu part vide.",
+  "Renomme-le : double-clic sur son nom dans la liste ou dans l'en-tête, ou clic sur le crayon. Entrée valide, Échap annule.",
+  "Essaie de valider un nom vide : le renommage doit être annulé."]},
+ {id:"A6",l:1,t:"Donner un raccourci clavier",d:"Et provoquer un conflit de touche",s:[
+  "Clique sur la pastille de raccourci du menu, puis appuie sur une touche (par exemple F7). Échap annule la capture.",
+  "Donne la même touche à un second menu : un message rouge doit apparaître en bas à gauche (avertissement, rien n'est bloqué).",
+  "Efface un raccourci avec Retour arrière : la pastille repasse sur « Unassigned » (Non assigné)."]},
+ {id:"A7",l:1,t:"Remplir un menu circulaire",d:"Placer des composants dans le PIE",s:[
+  "Choisis un de tes menus en mode PIE.",
+  "Dans la colonne de droite, utilise le filtre All / Modules / Components (Tous / Modules / Composants).",
+  "Place un composant seul : clic sur « + », ou glisse-le jusqu'à « Drop here: slot N » (Déposer ici : emplacement N).",
+  "Place un module entier : il devient un sous-menu.",
+  "Sélectionne une entrée placée, regarde ses réglages (rouage), puis retire-la (croix)."]},
+ {id:"A8",l:1,t:"Ajouter un opérateur natif",d:"N'importe quel outil de Blender",s:[
+  "Dans la colonne de droite de My menus, choisis le filtre Native (Natif).",
+  "Choisis une zone ou cherche un mot, par exemple « dissolve ».",
+  "Place l'opérateur dans ton menu (clic sur « + » ou glisser).",
+  "Dans My modules, retrouve-le dans le module « Native operators » (Opérateurs natifs)."]},
+ {id:"A9",l:1,t:"Utiliser ton menu dans Blender",d:"Le vrai usage",s:[
+  "Ferme le Hub, souris dans la vue 3D, appuie sur le raccourci de ton menu. Lance une entrée et vérifie son effet.",
+  "Passe en Edit Mode puis en Object Mode : note les entrées grisées et si ça te paraît logique.",
+  "Dans l'éditeur UV, lance un composant UV (par exemple Unwrap) depuis un menu."]},
+ {id:"A10",l:1,t:"PIE ou liste classique",d:"Comparer les deux formes",s:[
+  "Dans la colonne « Live preview » (Aperçu en direct), passe le TYPE de PIE à « Classic » (Classique) : tes entrées restent.",
+  "Change « TEST AS » (TESTER EN) pour voir l'aperçu dans un autre contexte.",
+  "Utilise le menu classique dans la vue 3D, puis repasse en PIE.",
+  "Dans ta note : lequel préfères-tu, et pourquoi ?"]},
+ {id:"A11",l:1,t:"Organiser, dupliquer, annuler",d:"Ranger un menu, revenir en arrière",s:[
+  "Déplace une entrée en la glissant, ou avec Alt + flèches.",
+  "Masque une entrée avec l'œil (touche H), puis réaffiche-la.",
+  "Annule avec Ctrl+Z et rétablis avec Ctrl+Maj+Z.",
+  "Duplique un menu (bouton à côté de la corbeille) et modifie la copie.",
+  "Supprime l'original : premier clic sur la corbeille (elle passe au rouge), deuxième clic pour supprimer. Ctrl+Z le fait revenir."]},
+ {id:"A12",l:2,t:"Ranger tes modules",d:"Dossiers, notes, vues",s:[
+  "Dans My modules, crée un dossier perso et ranges-y un module.",
+  "Ajoute une note à un module.",
+  "Passe en vue grille, puis reviens en liste.",
+  "Ouvre le menu « ⋯ » d'une carte et essaie ses choix."]},
+ {id:"A13",l:2,t:"Créer ton propre module",d:"Le test le plus complet",s:[
+  "Dans My modules, clique sur « New module » (Nouveau module) : nom, contexte, icône, dossier, puis Entrée.",
+  "Clique sur « Add Blender operator », cherche « Dissolve Vertices » et ajoute-le.",
+  "Ouvre son rouage et change une option (par exemple dans une liste déroulante).",
+  "Duplique un composant d'un autre module (icône Dupliquer sur sa ligne) : un nouveau module perso est créé, avec ses réglages indépendants.",
+  "Place ton module dans un de tes menus et lances-en une entrée."]},
+ {id:"A14",l:2,t:"Exporter et importer un module",d:"Partager tes modules",s:[
+  "Sur la ligne de ton module perso, clique sur l'icône Exporter et enregistre le fichier.",
+  "Supprime ton module (premier clic, puis deuxième clic pour confirmer).",
+  "Clique sur « Import » (Importer) et choisis ton fichier : le module revient, désactivé. Active-le.",
+  "Facultatif : échange un module avec un autre testeur sur Discord."]},
+ {id:"A15",l:2,t:"Fast Exporter",d:"Facultatif, si le module est installé",s:[
+  "Place le module Fast Exporter dans un menu classique.",
+  "Lance un Quick Export (FBX ou glTF) : choisis le dossier et le nom, puis exporte.",
+  "Relance le même export : le dossier est retenu et un avertissement prévient que le fichier sera remplacé.",
+  "Lance un export natif : l'explorateur de fichiers de Blender s'ouvre."]},
+ {id:"A16",l:2,t:"Diagnostics",d:"Facultatif, utile en cas de bug",s:[
+  "Ouvre la page Diagnostics et vérifie que le journal est lisible.",
+  "Clique sur « Copy report » (Copier le rapport) et colle-le sur Discord si quelque chose est cassé."]}
+];
+const KEY="forgepie_beta_v3",LBL={oui:"Oui",difficulte:"Oui avec difficulté",non:"Non"};
+let S;try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
+S.a=S.a||{};S.g=S.g||{};S.open=S.open||{g:[0],t:[]};
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const act=id=>S.a[id]||(S.a[id]={c:[],ok:"",diff:"",note:"",cap:""});
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const CHEV='<svg class="chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8l5 5 5-5"/></svg>';
+const CHECK='<span class="box"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3.2L13 4.8"/></svg></span>';
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const stateOf=t=>{const x=S.a[t.id];if(!x)return"";if(x.c.length===t.s.length)return"done";return(x.c.length||x.ok||x.diff||x.note||x.cap)?"part":""};
+
+/* Construction */
+function pills(name,vals,cur,cls){return vals.map(v=>`<label class="pill ${cls||""}"><input type="radio" name="${name}" value="${v[0]}"${String(cur)===String(v[0])?" checked":""}><span>${v[1]}</span></label>`).join("")}
+function testHTML(t){const x=act(t.id);return `<article class="test" id="t-${t.id}" data-id="${t.id}">
+ <button class="th" aria-expanded="false" aria-controls="b-${t.id}"><span class="id">${t.id}</span><span class="tt"><b>${t.t}</b><span class="sr st"></span><small>${t.d}</small></span><span class="prog"><i></i></span>${CHEV}</button>
+ <div class="collapse" id="b-${t.id}" inert><div class="inner"><div class="body">
+  <ul class="steps">${t.s.map((s,k)=>`<li><label><input type="checkbox" data-k="${k}"${x.c.includes(k)?" checked":""}>${CHECK}<span class="tx">${s}</span></label></li>`).join("")}</ul>
+  <fieldset class="f"><legend>Est-ce que ça a marché ?</legend><div class="row">${pills("ok-"+t.id,[["oui","Oui"],["difficulte","Oui avec difficulté"],["non","Non"]],x.ok)}</div></fieldset>
+  <fieldset class="f"><legend>Difficulté</legend><div class="row num">${pills("df-"+t.id,[1,2,3,4,5].map(n=>[n,n]),x.diff,"num")}</div><p class="hint">1 : très facile, 5 : très difficile</p></fieldset>
+  <div class="f"><label class="lab" for="n-${t.id}">Blocage ou surprise</label><textarea id="n-${t.id}" data-f="note" placeholder="Ce qui t'a bloqué, étonné ou paru confus">${esc(x.note)}</textarea></div>
+  <div class="f" style="margin:0"><label class="lab" for="c-${t.id}">Capture ou vidéo (facultatif)</label><input type="text" id="c-${t.id}" data-f="cap" value="${esc(x.cap)}" placeholder="Un lien, ou poste le fichier sur Discord en citant ${t.id}"></div>
+ </div></div></div></article>`}
+$("#groups").innerHTML=LEVELS.map((n,i)=>`<section class="grp" data-g="${i}">
+ <button class="gh" aria-expanded="false"><h2>${n}</h2><span class="chip">Pour toi</span><span class="cnt"></span>${CHEV}</button>
+ <div class="collapse" inert><div class="inner"><div class="tests">${TESTS.filter(t=>t.l===i).map(testHTML).join("")}</div></div></div></section>`).join("");
+$("#lvl").innerHTML=LEVELS.map((n,i)=>`<label><input type="radio" name="lvl" value="${i}"${S.lvl===i?" checked":""}><span>${n}</span></label>`).join("");
+const N5=[1,2,3,4,5].map(n=>[n,n]),opts=a=>a.map(v=>[v,v]);
+const GP={lang:opts(["Français","English","Autre"]),pie:opts(["Non","Ceux de Blender","Un add-on"]),util:N5,design:N5,ergo:N5,vocab:opts(["Oui","En partie","Non"]),read:opts(["Oui","Parfois trop petit","Non"]),after:opts(["Oui","Peut-être","Non"])};
+Object.entries(GP).forEach(([k,v])=>$("#g_"+k).innerHTML=pills("g-"+k,v,S.g[k],v===N5?"num":""));
+$$("[data-g]").forEach(e=>e.value=S.g[e.dataset.g]||"");
+
+/* Onglets : Infos s'ouvre en premier tant que le testeur n'a pas ouvert les tests */
+function showTab(name){["infos","tests"].forEach(n=>{const on=n===name,b=$("#tab-"+n),p=$("#p-"+n);
+  b.setAttribute("aria-selected",on);b.tabIndex=on?0:-1;p.hidden=!on;p.classList.toggle("on",on)});
+ if(name==="tests"){S.seen=1;save()}}
+$("#tab-infos").onclick=()=>showTab("infos");$("#tab-tests").onclick=()=>showTab("tests");$("#gotests").onclick=()=>{showTab("tests");window.scrollTo({top:0})};
+$(".tabs").addEventListener("keydown",e=>{if(e.key==="ArrowRight"||e.key==="ArrowLeft"){const n=e.target.id==="tab-infos"?"tests":"infos";showTab(n);$("#tab-"+n).focus()}});
+if(S.seen)showTab("tests");
+
+/* Anneau */
+const N=TESTS.length,GAP=1.6;
+const pt=(r,a)=>[100+r*Math.cos(a),100+r*Math.sin(a)];
+function slice(i){const a0=(i/N)*2*Math.PI-Math.PI/2+GAP*Math.PI/180,a1=((i+1)/N)*2*Math.PI-Math.PI/2-GAP*Math.PI/180,R=96,r=54;
+ const [x0,y0]=pt(R,a0),[x1,y1]=pt(R,a1),[x2,y2]=pt(r,a1),[x3,y3]=pt(r,a0);
+ return `M${x0} ${y0}A${R} ${R} 0 0 1 ${x1} ${y1}L${x2} ${y2}A${r} ${r} 0 0 0 ${x3} ${y3}Z`}
+$("#ring").innerHTML=`<svg viewBox="0 0 200 200" role="group">${TESTS.map((t,i)=>`<path class="sl" data-id="${t.id}" d="${slice(i)}" tabindex="0" role="button" aria-label="${t.id} ${t.t}"><title>${t.id} · ${t.t}</title></path>`).join("")}</svg><div class="mid"><div><b id="rn">0</b><small>sur ${N} testés</small></div></div>`;
+
+const DIFF=["#2FE39A","#9BE35A","#FFB547","#FF8A4C","#FF5D7A"]; /* la note de difficulté colore l'anneau */
+$("#leg").innerHTML=DIFF.map((c,i)=>`<i style="background:${c}"></i>`).join("");
+/* Mise à jour sans reconstruire (garde les animations) */
+function refresh(){
+ let done=0;
+ TESTS.forEach(t=>{const st=stateOf(t),el=$("#t-"+t.id),x=S.a[t.id],n=x?x.c.length:0;
+  if(st)done++;
+  const lab={done:"terminé",part:"commencé","":"pas testé"}[st]+(x&&x.diff?`, difficulté ${x.diff} sur 5`:"");
+  $(".st",el).textContent=" ("+lab+")";$(`.sl[data-id=${t.id}]`).setAttribute("aria-label",`${t.id} ${t.t}, ${lab}`);
+  el.classList.toggle("done",st==="done");el.classList.toggle("part",st==="part");
+  $(".prog i",el).style.width=(100*n/t.s.length)+"%";
+  const sl=$(`.sl[data-id=${t.id}]`);sl.style.fill=x&&x.diff?DIFF[x.diff-1]:st?"#2A5F82":"";
+  sl.classList.toggle("cur",el.classList.contains("open"))});
+ LEVELS.forEach((_,i)=>{const g=$(`.grp[data-g="${i}"]`),ts=TESTS.filter(t=>t.l===i);
+  $(".cnt",g).textContent=`${ts.filter(stateOf).length} / ${ts.length} testés`;g.classList.toggle("rec",S.lvl===i)});
+ [[3,["pseudo","blender","gpu","lang","conf","usage","pie"]],[4,["util","design","ergo","vocab","read","bug","want","after","redo"]]].forEach(([i,ks])=>
+  $(".cnt",$(`.grp[data-g="${i}"]`)).textContent=`${ks.filter(k=>S.g[k]).length} / ${ks.length} renseignés`);
+ $("#rn").textContent=done}
+function setOpen(el,on){el.classList.toggle("open",on);const b=el.querySelector(":scope>button");b.setAttribute("aria-expanded",on);el.querySelector(":scope>.collapse").inert=!on}
+function openTest(id,on){const el=$("#t-"+id);setOpen(el,on);
+ S.open.t=S.open.t.filter(z=>z!==id);if(on)S.open.t.push(id);refresh()}
+function openGroup(i,on){setOpen($(`.grp[data-g="${i}"]`),on);S.open.g=S.open.g.filter(z=>z!==i);if(on)S.open.g.push(i)}
+S.open.g.forEach(i=>openGroup(i,true));S.open.t.forEach(id=>setOpen($("#t-"+id),true));
+
+/* Événements */
+document.addEventListener("click",e=>{
+ const th=e.target.closest(".th");if(th){const id=th.parentElement.dataset.id;openTest(id,!th.parentElement.classList.contains("open"));save();return}
+ const gh=e.target.closest(".gh");if(gh){const g=gh.parentElement;openGroup(+g.dataset.g,!g.classList.contains("open"));save();return}
+ const sl=e.target.closest(".sl");if(sl)focusTest(sl.dataset.id)});
+document.addEventListener("keydown",e=>{const sl=e.target.closest&&e.target.closest(".sl");if(sl&&(e.key==="Enter"||e.key===" ")){e.preventDefault();focusTest(sl.dataset.id)}});
+function focusTest(id){const t=TESTS.find(z=>z.id===id);openGroup(t.l,true);openTest(id,true);save();
+ setTimeout(()=>$("#t-"+id).scrollIntoView({behavior:"smooth",block:"start"}),180)}
+/* Re-clic sur une réponse déjà choisie : on la décoche (pas pour le niveau) */
+document.addEventListener("click",e=>{const t=e.target;if(t.type!=="radio"||t.name==="lvl")return;
+ if(t.dataset.was==="1"){t.checked=false;onIn({target:t})}
+ $$(`input[name="${t.name}"]`).forEach(r=>r.dataset.was=r.checked?"1":"0")});
+$$("input[type=radio]").forEach(r=>r.dataset.was=r.checked?"1":"0");
+document.addEventListener("input",onIn);
+function onIn(e){const t=e.target,art=t.closest(".test"),v=t.checked===false?"":t.value;
+ if(art){const x=act(art.dataset.id);
+  if(t.type==="checkbox"){const k=+t.dataset.k;x.c=x.c.filter(n=>n!==k);if(t.checked)x.c.push(k)}
+  else if(t.name&&t.name.startsWith("ok-"))x.ok=v;
+  else if(t.name&&t.name.startsWith("df-"))x.diff=v;
+  else if(t.dataset.f)x[t.dataset.f]=t.value}
+ else if(t.name==="lvl"){S.lvl=+t.value;LEVELS.forEach((_,i)=>openGroup(i,i===S.lvl))}
+ else if(t.name&&t.name.startsWith("g-"))S.g[t.name.slice(2)]=v;
+ else if(t.dataset.g)S.g[t.dataset.g]=t.value;
+ refresh();save()}
+const GL=[["pseudo","Pseudo"],["blender","Blender"],["gpu","GPU"],["lang","Langue de Blender"],["conf","Système et écran"],["usage","Usage de Blender"],["pie","Menus PIE déjà utilisés"],["util","Utilité","/5"],["design","Design","/5"],["ergo","Ergonomie","/5"],["vocab","Vocabulaire clair"],["read","Hub lisible"],["bug","Bug le plus gênant"],["want","Ce qui manque"],["after","L'utiliserait après la bêta"],["redo","À refaire autrement"]];
+const HOOK="https://discord.com/api/webhooks/1566488159917838437/tHKfAV8gu-ldqS9mQ5l5TneJ067sXoMQbc6d9clGbIAhTgjWDtcTKWQzfay3ohOy8AvG"; /* URL du webhook Discord du salon des bilans ; vide = le bouton Envoyer est caché. Publique par nature : à supprimer et recréer en cas de spam */
+if(!HOOK)$("#send").hidden=true;
+function bilan(){
+ let o=`Niveau : ${LEVELS[S.lvl]||"?"}\n`+GL.map(([k,l,u])=>`${l} : ${S.g[k]||"-"}${S.g[k]&&u?u:""}`).join("\n")+"\n\n";
+ TESTS.forEach(t=>{const x=S.a[t.id];if(!stateOf(t))return;
+  o+=`== ${t.id} ${t.t} ==\nÉtapes : ${x.c.length}/${t.s.length}\nRéussie : ${LBL[x.ok]||"-"}\nDifficulté : ${x.diff||"-"}/5\nBlocage ou surprise : ${x.note||"-"}\nCapture : ${x.cap||"-"}\n\n`});
+ /* Ligne lisible par un script : le bilan complet en JSON compact, à agréger plus tard */
+ o+="JSON : "+JSON.stringify({form:3,lvl:LEVELS[S.lvl]||null,g:S.g,a:Object.fromEntries(TESTS.filter(stateOf).map(t=>{const x=S.a[t.id];return[t.id,{etapes:x.c.length,ok:x.ok,diff:x.diff,note:x.note,cap:x.cap}]}))})+"\n";
+ return o}
+/* Bouton : texte, action ; remet le libellé après 2,2 s */
+function wire(sel,label,act){const b=$(sel);b.onclick=async()=>{
+ try{b.textContent=await act()}catch(e){b.textContent=e.message}
+ setTimeout(()=>b.textContent=label,2200)}}
+wire("#copy","Copier mon bilan",async()=>{try{await navigator.clipboard.writeText(bilan())}catch(e){throw Error("Copie impossible")}return"Bilan copié"});
+/* Envoi : résumé court dans le salon + bilan complet en fichier joint (le texte d'un message est limité à 2000 caractères) */
+wire("#send","Envoyer mon bilan",async()=>{
+ const g=S.g,n=TESTS.filter(stateOf).length,fd=new FormData();
+ fd.append("payload_json",JSON.stringify({username:"ForgePIE bêta",allowed_mentions:{parse:[]},content:`**${g.pseudo||"Bilan anonyme"}** : ${n}/${TESTS.length} tests, utilité ${g.util||"-"}/5, design ${g.design||"-"}/5, ergonomie ${g.ergo||"-"}/5`.slice(0,1900)}));
+ fd.append("files[0]",new Blob([bilan()],{type:"text/plain"}),"bilan-"+Date.now().toString(36)+".txt");
+ let r;try{r=await fetch(HOOK,{method:"POST",body:fd})}catch(e){throw Error("Envoi impossible : copie le bilan")}
+ if(!r.ok)throw Error("Envoi refusé : copie le bilan");return"Bilan envoyé, merci !"});
+$("#reset").onclick=()=>{if(confirm("Effacer toute ta progression sur cet appareil ?")){try{localStorage.removeItem(KEY)}catch(e){}location.reload()}};
+refresh();
+</script>
+</body>
+</html>
