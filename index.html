@@ -168,11 +168,11 @@ textarea:focus,input[type=text]:focus{outline:none;border-color:var(--cy);box-sh
   </div>
   <div class="info">
    <h2>ForgePIE, c'est quoi ?</h2>
-   <p>Une extension Blender pour créer tes propres menus : circulaires (PIE) ou en liste classique. Tu actives des <b>modules</b> (des groupes de <b>composants</b> prêts à l'emploi, comme des outils UV ou des exports), puis tu les assembles dans tes menus. Le <b>Hub</b> est la fenêtre où tu fais tout ça : elle s'ouvre avec F6 dans Blender.</p>
+   <p>Une extension Blender pour créer tes propres menus : circulaires (PIE) ou en liste classique. Tu actives des <b>modules</b> (des groupes de <b>composants</b> prêts à l'emploi, comme le nettoyage d'un projet GTA V), puis tu les assembles dans tes menus. Le <b>Hub</b> est la fenêtre où tu fais tout ça : elle s'ouvre avec F6 dans Blender.</p>
   </div>
   <div class="info">
    <h2>Télécharger la bêta</h2>
-   <p>Un seul zip : ForgePIE, quatre modules et le fichier INSTALL.txt. Dézippe-le, puis suis INSTALL.txt (ou le test A1).</p>
+   <p>Un seul zip : ForgePIE, ses trois modules officiels (Sollumz MLO, Optimizer, Auto Sollumz) et le fichier INSTALL.txt. Dézippe-le, puis suis INSTALL.txt (ou le test A1).</p>
    <a class="btn pri" style="display:inline-block;text-decoration:none" href="https://github.com/Ender501/forgepie-beta/releases/latest/download/forgepie-beta.zip" download>Télécharger forgepie-beta.zip</a>
   </div>
   <div class="info">
@@ -242,23 +242,25 @@ const LEVELS=["Débutant","Intermédiaire","Avancé"];
 const TESTS=[
  {id:"A1",l:0,t:"Installer et ouvrir le Hub",d:"Premier contact avec l'outil",s:[
   "Dans Blender 5.2 : Edit > Preferences > Get Extensions (même emplacement si ton Blender est en français), flèche en haut à droite > « Install from Disk… ». Choisis forgepie-0.1.0.zip et active l'extension (détail dans INSTALL.txt).",
-  "Installe de la même façon au moins deux modules (par exemple UV Toolkit et Modeling Essentials). Attention : le bouton « Import » du Hub n'accepte que des fichiers .json de module personnalisé, jamais ces zips.",
+  "Installe de la même façon les trois modules officiels (Sollumz MLO, Optimizer, Auto Sollumz). Attention : le bouton « Import » du Hub n'accepte que des fichiers .json de module personnalisé, jamais ces zips.",
   "Dans la vue 3D, appuie sur F6, ou clique sur le bouton ForgePIE de la barre latérale (N) : le Hub s'ouvre.",
   "Vérifie les quatre pages : Discover (Découvrir), My modules (Mes modules), My menus (Mes menus), Diagnostics.",
   "Ferme le Hub avec Échap, puis rouvre-le avec F6 dans l'éditeur UV."]},
- {id:"A2",l:0,t:"Essayer le menu par défaut",d:"ForgePIE marche dès l'installation",s:[
-  "Hub fermé, souris dans la vue 3D, appuie sur F5 : un menu circulaire d'exemple s'affiche.",
-  "Lance une de ses entrées et vérifie son effet.",
-  "Ouvre son sous-menu (le module placé en entier) et lances-y une entrée."]},
+ {id:"A2",l:0,t:"Activer un module officiel",d:"Rendre un module disponible",s:[
+  "Dans Discover (Découvrir), repère le badge « Official » (Officiel) sur chaque carte : les trois modules sont arrivés désactivés.",
+  "Active-en un avec son interrupteur, puis mets-le en favori (étoile) et retrouve-le dans My modules (Mes modules).",
+  "Dans la fiche du module, ouvre « Compatibility & support » (Compatibilité et assistance) : lis ce qui s'y trouve.",
+  "Désactive-le : il passe dans « Deactivated » (Désactivés). Réactive-le."]},
  {id:"A3",l:0,t:"Explorer Discover",d:"La bibliothèque de modules",s:[
   "Ouvre Discover (Découvrir).",
-  "Appuie sur / pour aller dans la recherche, tape « uv », puis Échap pour vider la recherche.",
+  "Appuie sur / pour aller dans la recherche, tape « sollumz », puis Échap pour vider la recherche.",
   "Change le tri, puis passe de la grille à la liste et reviens.",
   "Clique sur une carte pour ouvrir la fiche du module et parcours ses composants."]},
- {id:"A4",l:0,t:"Activer un module",d:"Rendre un module disponible",s:[
-  "Un module tout juste installé arrive désactivé : active-le avec son interrupteur.",
-  "Mets-le en favori (étoile), puis retrouve-le dans My modules (Mes modules).",
-  "Désactive-le : il passe dans « Deactivated » (Désactivés). Réactive-le."]},
+ {id:"A4",l:0,t:"Ton premier menu F5",d:"Le menu « Default » part vide : remplis-le",s:[
+  "Active au moins un module, puis ouvre My menus (Mes menus) : le menu « Default » (touche F5) est vide.",
+  "Glisse un composant (par la poignée à gauche de son nom) dans un emplacement, ou clique sur « + ».",
+  "Place un module entier (« + » sur sa ligne) : il devient un sous-menu.",
+  "Hub fermé, souris dans la vue 3D, appuie sur F5 : ton menu circulaire s'affiche. Ouvre le sous-menu et lance une entrée."]},
  {id:"A5",l:0,t:"Créer un menu et le renommer",d:"Ton premier menu, vide",s:[
   "Ouvre My menus (Mes menus) et clique sur « + New menu » (Nouveau menu) : le menu part vide.",
   "Renomme-le : double-clic sur son nom dans la liste ou dans l'en-tête, ou clic sur le crayon. Entrée valide, Échap annule.",
@@ -281,7 +283,7 @@ const TESTS=[
  {id:"A9",l:1,t:"Utiliser ton menu dans Blender",d:"Le vrai usage",s:[
   "Ferme le Hub, souris dans la vue 3D, appuie sur le raccourci de ton menu. Lance une entrée et vérifie son effet.",
   "Passe en Edit Mode puis en Object Mode : note les entrées grisées et si ça te paraît logique.",
-  "Dans l'éditeur UV, lance un composant UV (par exemple Unwrap) depuis un menu."]},
+  "Lance un composant d'Optimizer (par exemple Clean Mesh) depuis ton menu : une fenêtre s'ouvre, valide ou annule."]},
  {id:"A10",l:1,t:"PIE ou liste classique",d:"Comparer les deux formes",s:[
   "Dans la colonne « Live preview » (Aperçu en direct), passe le TYPE de PIE à « Classic » (Classique) : tes entrées restent.",
   "Change « TEST AS » (TESTER EN) pour voir l'aperçu dans un autre contexte.",
@@ -294,31 +296,36 @@ const TESTS=[
   "Duplique un menu (bouton à côté de la corbeille) et modifie la copie.",
   "Supprime l'original : premier clic sur la corbeille (elle passe au rouge), deuxième clic pour supprimer. Ctrl+Z le fait revenir."]},
  {id:"A12",l:2,t:"Ranger tes modules",d:"Dossiers, notes, vues",s:[
-  "Dans My modules, crée un dossier perso et ranges-y un module.",
+  "Dans My modules, utilise les filtres All / Official / Custom (Tous / Officiels / Perso) : vérifie les compteurs.",
+  "Crée un dossier perso (« + » à côté de MY FOLDERS) et ranges-y un module.",
   "Ajoute une note à un module.",
   "Passe en vue grille, puis reviens en liste.",
   "Ouvre le menu « ⋯ » d'une carte et essaie ses choix."]},
  {id:"A13",l:2,t:"Créer ton propre module",d:"Le test le plus complet",s:[
-  "Dans My modules, clique sur « New module » (Nouveau module) : nom, contexte, icône, dossier, puis Entrée.",
-  "Clique sur « Add Blender operator », cherche « Dissolve Vertices » et ajoute-le.",
-  "Ouvre son rouage et change une option (par exemple dans une liste déroulante).",
-  "Duplique un composant d'un autre module (icône Dupliquer sur sa ligne) : un nouveau module perso est créé, avec ses réglages indépendants.",
+  "Dans My modules, clique sur « New module » (Nouveau module) : nom, contexte, icône, dossier, puis Entrée. Une fenêtre d'édition s'ouvre par-dessus le Hub.",
+  "Clique sur « Native Blender Operator », cherche « Dissolve » et ajoute un opérateur : son rouage apparaît tout seul.",
+  "Ouvre son rouage et change une option, puis ferme avec « Done » (Terminé).",
+  "Rouvre ton module en double-cliquant sur sa ligne. Dans la colonne de droite, active un composant d'un module officiel pour l'ajouter.",
   "Place ton module dans un de tes menus et lances-en une entrée."]},
- {id:"A14",l:2,t:"Exporter et importer un module",d:"Partager tes modules",s:[
+ {id:"A14",l:2,t:"Exporter, supprimer et importer un module",d:"Partager tes modules",s:[
   "Sur la ligne de ton module perso, clique sur l'icône Exporter et enregistre le fichier.",
-  "Supprime ton module (premier clic, puis deuxième clic pour confirmer).",
+  "Clique sur la corbeille de sa ligne : premier clic, elle passe au rouge ; deuxième clic pour supprimer.",
   "Clique sur « Import » (Importer) et choisis ton fichier : le module revient, désactivé. Active-le.",
   "Facultatif : échange un module avec un autre testeur sur Discord."]},
- {id:"A15",l:2,t:"Fast Exporter",d:"Facultatif, si le module est installé",s:[
-  "Place le module Fast Exporter dans un menu classique.",
-  "Lance un Quick Export (FBX ou glTF) : choisis le dossier et le nom, puis exporte.",
-  "Relance le même export : le dossier est retenu et un avertissement prévient que le fichier sera remplacé.",
-  "Lance un export natif : l'explorateur de fichiers de Blender s'ouvre."]},
- {id:"A16",l:2,t:"Diagnostics",d:"Facultatif, utile en cas de bug",s:[
+ {id:"A15",l:2,t:"Optimizer",d:"Facultatif : nettoyer un projet",s:[
+  "Place Optimizer dans un menu (sous-menu) et lance « Clean Data » : lis la fenêtre avant de valider.",
+  "Lance « Clean Collision Data » et « Clean Mesh » : vérifie que chaque fenêtre propose Whole scene / Selection (Toute la scène / Sélection), puis ferme-la avec Cancel (Annuler).",
+  "Valide un nettoyage sur un objet de test et vérifie le résultat."]},
+ {id:"A16",l:2,t:"Modules Sollumz",d:"Facultatif, si tu utilises Sollumz",s:[
+  "Installe Sollumz, puis place Sollumz MLO et Auto Sollumz dans un menu (étape A1 pour installer leurs zips).",
+  "Auto Sollumz : lance « Auto Drawable » sur un objet maillé, puis « Auto Collision » ou « Auto Box Collision ».",
+  "Sollumz MLO : essaie « Smart YTYP », « Create Portal » et « Flip Portal » (Create et Flip Portal fonctionnent aussi en Edit Mode).",
+  "Note ce qui t'a surpris ou paru lent."]},
+ {id:"A17",l:2,t:"Diagnostics",d:"Facultatif, utile en cas de bug",s:[
   "Ouvre la page Diagnostics et vérifie que le journal est lisible.",
   "Clique sur « Copy report » (Copier le rapport) et colle-le sur Discord si quelque chose est cassé."]}
 ];
-const KEY="forgepie_beta_v3",LBL={oui:"Oui",difficulte:"Oui avec difficulté",non:"Non"};
+const KEY="forgepie_beta_v4",LBL={oui:"Oui",difficulte:"Oui avec difficulté",non:"Non"};
 let S;try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
 S.a=S.a||{};S.g=S.g||{};S.open=S.open||{g:[0],t:[]};
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -414,7 +421,7 @@ function onIn(e){const t=e.target,art=t.closest(".test"),v=t.checked===false?"":
  else if(t.dataset.g)S.g[t.dataset.g]=t.value;
  refresh();save()}
 const GL=[["pseudo","Pseudo"],["blender","Blender"],["gpu","GPU"],["lang","Langue de Blender"],["conf","Système et écran"],["usage","Usage de Blender"],["pie","Menus PIE déjà utilisés"],["util","Utilité","/5"],["design","Design","/5"],["ergo","Ergonomie","/5"],["vocab","Vocabulaire clair"],["read","Hub lisible"],["bug","Bug le plus gênant"],["want","Ce qui manque"],["after","L'utiliserait après la bêta"],["redo","À refaire autrement"]];
-const HOOK="https://discord.com/api/webhooks/1566488159917838437/tHKfAV8gu-ldqS9mQ5l5TneJ067sXoMQbc6d9clGbIAhTgjWDtcTKWQzfay3ohOy8AvG"; /* URL du webhook Discord du salon des bilans ; vide = le bouton Envoyer est caché. Publique par nature : à supprimer et recréer en cas de spam */
+const HOOK="https://discord.com/api/webhooks/1567269652248395976/LYjFq6mREprKqH5Tz0ZvKbWBR7wyAiihycHMpNzTO_oVbnciU8nVUiQYPjke4Mzue8G7"; /* URL du webhook Discord du salon des bilans ; vide = le bouton Envoyer est caché. Publique par nature : à supprimer et recréer en cas de spam */
 if(!HOOK)$("#send").hidden=true;
 function bilan(){
  let o=`Niveau : ${LEVELS[S.lvl]||"?"}\n`+GL.map(([k,l,u])=>`${l} : ${S.g[k]||"-"}${S.g[k]&&u?u:""}`).join("\n")+"\n\n";
