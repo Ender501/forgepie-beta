@@ -210,7 +210,7 @@ textarea:focus,input[type=text]:focus{outline:none;border-color:var(--cy);box-sh
   <div class="f"><label class="lab" for="g_blender">Version de Blender</label><input type="text" id="g_blender" data-g="blender" placeholder="5.2.3 LTS"><p class="hint">Clique sur le logo Blender tout en haut à gauche de la fenêtre, puis sur « About Blender » : la version est affichée en haut de la fenêtre qui s'ouvre (par exemple 5.2.3 LTS). Autre moyen : dans le Hub, onglet Diagnostics, bouton « Copy report » : la première ligne commence par « Blender 5.2… ».</p></div>
   <div class="f"><label class="lab" for="g_gpu">Carte graphique (GPU)</label><input type="text" id="g_gpu" data-g="gpu" placeholder="NVIDIA RTX 3060"><p class="hint">Windows : ouvre le Gestionnaire des tâches (Ctrl + Maj + Échap), onglet « Performances », clique sur « GPU » : le nom de la carte est écrit en haut à droite (par exemple NVIDIA GeForce RTX 3060). Mac : menu Pomme > À propos de ce Mac.</p></div>
   <fieldset class="f"><legend>Langue de l'interface de Blender</legend><div class="row" id="g_lang"></div></fieldset>
-  <div class="f"><label class="lab" for="g_conf">Système et taille d'écran</label><input type="text" id="g_conf" data-g="conf" placeholder="Windows 11, 1920×1080"></div>
+  <fieldset class="f"><legend>Ton système</legend><div class="row" id="g_conf"></div></fieldset>
   <div class="f"><label class="lab" for="g_usage">Ce que tu fais surtout dans Blender</label><input type="text" id="g_usage" data-g="usage" placeholder="Modélisation, UV, animation…"></div>
   <fieldset class="f"><legend>Tu utilises déjà des menus PIE ?</legend><div class="row" id="g_pie"></div></fieldset>
   </div></div></div>
@@ -227,6 +227,9 @@ textarea:focus,input[type=text]:focus{outline:none;border-color:var(--cy);box-sh
   <fieldset class="f"><legend>Ergonomie</legend><div class="row num" id="g_ergo"></div><p class="hint">1 : confus, 5 : tout coule de source</p></fieldset>
   <fieldset class="f"><legend>Les mots « module », « composant » et « menu » sont clairs ?</legend><div class="row" id="g_vocab"></div></fieldset>
   <fieldset class="f"><legend>Le Hub est assez lisible (taille du texte, contrastes) ?</legend><div class="row" id="g_read"></div></fieldset>
+  <fieldset class="f"><legend>Tu t'es repéré facilement dans le Hub (où cliquer, où trouver les choses) ?</legend><div class="row" id="g_nav"></div></fieldset>
+  <div class="f"><label class="lab" for="g_stuck">Ce qui t'a posé problème ou fait hésiter</label><textarea id="g_stuck" data-g="stuck" placeholder="Un bouton introuvable, un mot flou, une étape pas claire…"></textarea></div>
+  <div class="f"><label class="lab" for="g_change">Ce que tu aimerais changer en premier</label><textarea id="g_change" data-g="change"></textarea></div>
   <div class="f"><label class="lab" for="g_bug">Le bug le plus gênant</label><textarea id="g_bug" data-g="bug"></textarea></div>
   <div class="f"><label class="lab" for="g_want">Le module ou l'outil qui te manque</label><textarea id="g_want" data-g="want"></textarea></div>
   <fieldset class="f"><legend>Tu l'utiliserais après la bêta ?</legend><div class="row" id="g_after"></div></fieldset>
@@ -352,7 +355,7 @@ $("#groups").innerHTML=LEVELS.map((n,i)=>`<section class="grp" data-g="${i}">
  <div class="collapse" inert><div class="inner"><div class="tests">${TESTS.filter(t=>t.l===i).map(testHTML).join("")}</div></div></div></section>`).join("");
 $("#lvl").innerHTML=LEVELS.map((n,i)=>`<label><input type="radio" name="lvl" value="${i}"${S.lvl===i?" checked":""}><span>${n}</span></label>`).join("");
 const N5=[1,2,3,4,5].map(n=>[n,n]),opts=a=>a.map(v=>[v,v]);
-const GP={lang:opts(["Français","English","Autre"]),pie:opts(["Non","Ceux de Blender","Un add-on"]),util:N5,design:N5,ergo:N5,vocab:opts(["Oui","En partie","Non"]),read:opts(["Oui","Parfois trop petit","Non"]),after:opts(["Oui","Peut-être","Non"])};
+const GP={lang:opts(["Français","English","Autre"]),conf:opts(["Windows","macOS","Linux"]),nav:opts(["Oui","En partie","Non"]),pie:opts(["Non","Ceux de Blender","Un add-on"]),util:N5,design:N5,ergo:N5,vocab:opts(["Oui","En partie","Non"]),read:opts(["Oui","Parfois trop petit","Non"]),after:opts(["Oui","Peut-être","Non"])};
 Object.entries(GP).forEach(([k,v])=>$("#g_"+k).innerHTML=pills("g-"+k,v,S.g[k],v===N5?"num":""));
 $$("[data-g]").forEach(e=>e.value=S.g[e.dataset.g]||"");
 
@@ -387,7 +390,7 @@ function refresh(){
   sl.classList.toggle("cur",el.classList.contains("open"))});
  LEVELS.forEach((_,i)=>{const g=$(`.grp[data-g="${i}"]`),ts=TESTS.filter(t=>t.l===i);
   $(".cnt",g).textContent=`${ts.filter(stateOf).length} / ${ts.length} testés`;g.classList.toggle("rec",S.lvl===i)});
- [[3,["pseudo","blender","gpu","lang","conf","usage","pie"]],[4,["util","design","ergo","vocab","read","bug","want","after","redo"]]].forEach(([i,ks])=>
+ [[3,["pseudo","blender","gpu","lang","conf","usage","pie"]],[4,["util","design","ergo","vocab","read","nav","stuck","change","bug","want","after","redo"]]].forEach(([i,ks])=>
   $(".cnt",$(`.grp[data-g="${i}"]`)).textContent=`${ks.filter(k=>S.g[k]).length} / ${ks.length} renseignés`);
  $("#rn").textContent=done}
 function setOpen(el,on){el.classList.toggle("open",on);const b=el.querySelector(":scope>button");b.setAttribute("aria-expanded",on);el.querySelector(":scope>.collapse").inert=!on}
@@ -420,7 +423,7 @@ function onIn(e){const t=e.target,art=t.closest(".test"),v=t.checked===false?"":
  else if(t.name&&t.name.startsWith("g-"))S.g[t.name.slice(2)]=v;
  else if(t.dataset.g)S.g[t.dataset.g]=t.value;
  refresh();save()}
-const GL=[["pseudo","Pseudo"],["blender","Blender"],["gpu","GPU"],["lang","Langue de Blender"],["conf","Système et écran"],["usage","Usage de Blender"],["pie","Menus PIE déjà utilisés"],["util","Utilité","/5"],["design","Design","/5"],["ergo","Ergonomie","/5"],["vocab","Vocabulaire clair"],["read","Hub lisible"],["bug","Bug le plus gênant"],["want","Ce qui manque"],["after","L'utiliserait après la bêta"],["redo","À refaire autrement"]];
+const GL=[["pseudo","Pseudo"],["blender","Blender"],["gpu","GPU"],["lang","Langue de Blender"],["conf","Système"],["usage","Usage de Blender"],["pie","Menus PIE déjà utilisés"],["util","Utilité","/5"],["design","Design","/5"],["ergo","Ergonomie","/5"],["vocab","Vocabulaire clair"],["read","Hub lisible"],["nav","Repérage facile dans le Hub"],["stuck","Ce qui a posé problème"],["change","À changer en premier"],["bug","Bug le plus gênant"],["want","Ce qui manque"],["after","L'utiliserait après la bêta"],["redo","À refaire autrement"]];
 const HOOK="https://discord.com/api/webhooks/1567269652248395976/LYjFq6mREprKqH5Tz0ZvKbWBR7wyAiihycHMpNzTO_oVbnciU8nVUiQYPjke4Mzue8G7"; /* URL du webhook Discord du salon des bilans ; vide = le bouton Envoyer est caché. Publique par nature : à supprimer et recréer en cas de spam */
 if(!HOOK)$("#send").hidden=true;
 function bilan(){
