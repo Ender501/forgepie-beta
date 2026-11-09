@@ -72,11 +72,12 @@ header{padding:40px 0 0}
 
 /* Groupes et tests */
 .grp{margin:0 0 12px;background:var(--panel);border:1px solid var(--line);border-radius:14px;transition:border-color .3s}
-.grp.rec{border-color:var(--line2)}
 .gh{display:flex;align-items:center;gap:12px;width:100%;padding:16px 18px}
 .gh h2{margin:0;font-size:17px;font-weight:600;flex:1}
-.chip{padding:2px 10px;border-radius:999px;font-size:12px;background:rgba(0,216,255,.14);color:var(--cy);opacity:0;transform:scale(.8);transition:opacity .3s,transform .3s var(--ease)}
-.rec .chip{opacity:1;transform:none}
+.chip{padding:2px 10px;border-radius:999px;font-size:12px;background:rgba(0,216,255,.14);color:var(--cy)}
+.test .chip{display:none}.test.rec .chip{display:inline-block}
+.nf{display:none}.test.sh .nf{display:block}
+.grp .bar{margin:12px 0 0}
 .cnt{color:var(--dim);font-size:13px;font-variant-numeric:tabular-nums}
 .chev{width:18px;height:18px;flex:none;color:var(--dim);transition:transform .35s var(--ease)}
 .open>.gh .chev,.open>.th .chev{transform:rotate(180deg);color:var(--cy)}
@@ -164,15 +165,15 @@ textarea:focus,input[type=text]:focus{outline:none;border-color:var(--cy);box-sh
   <div class="alert" role="note">
    <h2>À lire avant de commencer</h2>
    <p>Ta progression est enregistrée <b>dans ton navigateur, sur cet appareil</b>. Si tu vides ton cache, ou si tu changes d'appareil ou de navigateur, <b>tu perds tout</b>.</p>
-   <p>Avant de changer, clique sur « Copier mon bilan » (en bas de l'onglet Les tests) et garde le texte.</p>
+   <p>Avant de changer, clique sur « Enregistrer ma progression » (en bas de l'onglet Les tests) : tu pourras la reprendre avec « Reprendre une progression », même ailleurs.</p>
   </div>
   <div class="info">
    <h2>ForgePIE, c'est quoi ?</h2>
-   <p>Une extension Blender pour créer tes propres menus : circulaires (PIE) ou en liste classique. Tu actives des <b>modules</b> (des groupes de <b>composants</b> prêts à l'emploi, comme le nettoyage d'un projet GTA V), puis tu les assembles dans tes menus. Le <b>Hub</b> est la fenêtre où tu fais tout ça : elle s'ouvre avec F6 dans Blender (et toute seule au premier démarrage, avec un guide).</p>
+   <p>Une extension Blender pour créer tes propres menus : circulaires (PIE) ou en liste classique. Tu actives des <b>modules</b> (des groupes de <b>composants</b> prêts à l'emploi, comme le nettoyage d'un projet GTA V), puis tu les assembles dans tes menus. Le <b>Hub</b> est la fenêtre où tu fais tout ça : elle s'ouvre avec F6 dans Blender.</p>
   </div>
   <div class="info">
    <h2>Télécharger la bêta</h2>
-   <p>Un seul zip : ForgePIE, ses trois modules officiels (Sollumz MLO, Optimizer, Auto Sollumz) et le fichier INSTALL.txt. Dézippe-le, puis suis INSTALL.txt (ou le test A1). Au premier démarrage, ForgePIE ouvre son Hub et te guide pas à pas : le test A2 consiste à suivre ce guide.</p>
+   <p>Un seul zip : ForgePIE, ses deux modules officiels (Smart GTA Tools et Smart UV Tools) et le fichier INSTALL.txt. Dézippe-le, puis suis INSTALL.txt (ou le test A1).</p>
    <a class="btn pri" style="display:inline-block;text-decoration:none" href="https://github.com/Ender501/forgepie-beta/releases/latest/download/forgepie-beta.zip" download>Télécharger forgepie-beta.zip</a>
   </div>
   <div class="info">
@@ -182,8 +183,9 @@ textarea:focus,input[type=text]:focus{outline:none;border-color:var(--cy);box-sh
   <div class="info">
    <h2>Comment tester</h2>
    <ul>
-    <li>Commence par le guide de prise en main, directement dans ForgePIE (test A2) : il t'apprend l'essentiel.</li>
-    <li>Ensuite, choisis les tests qui t'intéressent, dans l'ordre que tu veux.</li>
+    <li><b>Pressé ?</b> Parcours express d'environ 20 minutes : A1, A3, A5 et A10, puis l'avis global. C'est déjà très utile.</li>
+    <li><b>Partie 1</b> : crée tes menus et comprends ForgePIE. Commence par A1, A3, A4 et A5 : ils t'apprennent l'essentiel, le reste suit dans l'ordre que tu veux.</li>
+    <li><b>Partie 2 (facultative)</b> : des marches à suivre pas à pas pour les modules officiels, Smart UV Tools (A16) et Smart GTA Tools (A17). Fais-les seulement si ces outils te servent.</li>
     <li>Ouvre un test, coche les étapes au fur et à mesure.</li>
     <li>Note si ça a marché, la difficulté, et ce qui t'a bloqué ou surpris.</li>
     <li>Donne ton avis global en bas, même si tu n'as fait que quelques tests.</li>
@@ -196,8 +198,8 @@ textarea:focus,input[type=text]:focus{outline:none;border-color:var(--cy);box-sh
  <section class="panel" id="p-tests" role="tabpanel" aria-labelledby="tab-tests" hidden>
   <div class="top">
    <div>
-    <p class="q" id="lq">Ton niveau avec Blender</p>
-    <div class="seg" role="radiogroup" aria-labelledby="lq" id="lvl"></div>
+    <p class="q">Deux parties</p>
+    <p class="hint">La partie 1 t'apprend à créer tes menus et à comprendre ForgePIE. La partie 2, facultative, te guide pas à pas sur les modules officiels.</p>
    </div>
    <div class="rcol"><div class="ring" id="ring" aria-label="Progression des tests"></div>
     <div class="legw"><span>Facile</span><div class="leg" id="leg" aria-hidden="true"></div><span>Difficile</span></div>
@@ -213,7 +215,9 @@ textarea:focus,input[type=text]:focus{outline:none;border-color:var(--cy);box-sh
   <fieldset class="f"><legend>Langue de l'interface de Blender</legend><div class="row" id="g_lang"></div></fieldset>
   <fieldset class="f"><legend>Ton système</legend><div class="row" id="g_conf"></div></fieldset>
   <div class="f"><label class="lab" for="g_usage">Ce que tu fais surtout dans Blender</label><input type="text" id="g_usage" data-g="usage" placeholder="Modélisation, UV, animation…"></div>
+  <div class="f"><label class="lab" for="g_build">Version de ForgePIE</label><input type="text" id="g_build" data-g="build" placeholder="0.1.0-beta.180"><p class="hint">Dans le Hub, onglet Diagnostics, « Copy report » : la première ligne contient « ForgePIE 0.1.0-beta.… ». Sans ce numéro, on ne sait pas de quel zip vient ton bug.</p></div>
   <fieldset class="f"><legend>Tu utilises déjà des menus PIE ?</legend><div class="row" id="g_pie"></div></fieldset>
+  <fieldset class="f"><legend>Quels modules t'intéressent ?</legend><div class="row" id="g_mods"></div><p class="hint">On te signale les marches à suivre de la partie 2 qui te concernent.</p></fieldset>
   </div></div></div>
  </section>
 
@@ -226,9 +230,6 @@ textarea:focus,input[type=text]:focus{outline:none;border-color:var(--cy);box-sh
   <fieldset class="f"><legend>Utilité de l'outil pour toi</legend><div class="row num" id="g_util"></div><p class="hint">1 : aucune, 5 : indispensable</p></fieldset>
   <fieldset class="f"><legend>Design</legend><div class="row num" id="g_design"></div><p class="hint">1 : à revoir, 5 : très réussi</p></fieldset>
   <fieldset class="f"><legend>Ergonomie</legend><div class="row num" id="g_ergo"></div><p class="hint">1 : confus, 5 : tout coule de source</p></fieldset>
-  <fieldset class="f"><legend>Le guide de prise en main t'a mené jusqu'à ton premier menu sans aide ?</legend><div class="row" id="g_tuto"></div></fieldset>
-  <fieldset class="f"><legend>Les onglets grisés pendant le guide</legend><div class="row" id="g_lock"></div></fieldset>
-  <div class="f"><label class="lab" for="g_tutostuck">L'étape du guide qui t'a le plus fait hésiter</label><textarea id="g_tutostuck" data-g="tutostuck" placeholder="Le numéro de l'étape et ce qui n'était pas clair"></textarea></div>
   <fieldset class="f"><legend>Les mots « module », « composant » et « menu » sont clairs ?</legend><div class="row" id="g_vocab"></div><p class="hint">La bulle « ? » en haut du Hub les explique.</p></fieldset>
   <fieldset class="f"><legend>Le Hub est assez lisible (taille du texte, contrastes) ?</legend><div class="row" id="g_read"></div></fieldset>
   <fieldset class="f"><legend>Tu t'es repéré facilement dans le Hub (où cliquer, où trouver les choses) ?</legend><div class="row" id="g_nav"></div></fieldset>
@@ -238,42 +239,34 @@ textarea:focus,input[type=text]:focus{outline:none;border-color:var(--cy);box-sh
   <div class="f"><label class="lab" for="g_want">Le module ou l'outil qui te manque</label><textarea id="g_want" data-g="want"></textarea></div>
   <fieldset class="f"><legend>Tu l'utiliserais après la bêta ?</legend><div class="row" id="g_after"></div></fieldset>
   <div class="f"><label class="lab" for="g_redo">Ce que tu ferais autrement</label><textarea id="g_redo" data-g="redo"></textarea></div>
-  <div class="bar"><button class="btn pri" id="send">Envoyer mon bilan</button><button class="btn" id="copy">Copier mon bilan</button><button class="btn" id="reset">Tout effacer</button></div>
+  <div class="bar"><button class="btn pri" id="send">Envoyer mon bilan</button><button class="btn" id="copy">Copier mon bilan</button><button class="btn" id="dl">Enregistrer ma progression</button><label class="btn" id="ldl"><span>Reprendre une progression</span><input type="file" id="ld" accept=".json,application/json" hidden></label><button class="btn" id="reset">Tout effacer</button></div>
   </div></div></div>
  </section>
  </section>
 </div>
 
 <script>
-const LEVELS=["Débutant","Intermédiaire","Avancé"];
+const LEVELS=["Partie 1 · Créer tes menus et comprendre ForgePIE","Partie 2 · Les modules officiels (facultatif)"];
 const TESTS=[
  {id:"A1",l:0,t:"Installer et ouvrir le Hub",d:"Premier contact avec l'outil",s:[
-  "Dans Blender 5.2 : Edit > Preferences > Get Extensions (même emplacement si ton Blender est en français), flèche en haut à droite > « Install from Disk… ». Choisis forgepie-0.1.0.zip et active l'extension (détail dans INSTALL.txt).",
-  "Installe de la même façon les trois modules officiels (Sollumz MLO, Optimizer, Auto Sollumz). Attention : le bouton « Import » du Hub n'accepte que des fichiers .json de module personnalisé, jamais ces zips.",
-  "Au premier démarrage de Blender avec ForgePIE, le Hub s'ouvre tout seul au bout de quelques secondes et lance le guide de prise en main. S'il ne s'ouvre pas : F6 dans la vue 3D, ou le bouton ForgePIE de la barre latérale (N).",
-  "Ferme le Hub avec Échap, puis rouvre-le avec F6, y compris dans l'éditeur UV."]},
- {id:"A2",l:0,t:"Le guide de prise en main",d:"ForgePIE t'apprend à s'en servir : suis-le sans aide",s:[
-  "Ouvre le Hub (F6). Une barre verte en haut dit « Step 1 of 6 » et ce qu'il faut faire. Les onglets suivants sont grisés tant que l'étape n'est pas faite.",
-  "Étape 1, Select a module : clique sur la carte d'un module dans Discover pour voir son contenu.",
-  "Étape 2, Create a new module : va dans My modules, appuie sur « New module » (entouré de vert), garde le nom proposé et valide avec « Create & configure ».",
-  "Étape 3, Add components : glisse un module ou un composant de la colonne de droite vers ta liste, ou active son interrupteur. « Done » reste grisé (la raison est écrite à côté) jusqu'au premier composant : puis appuie sur Done.",
-  "Étape 4, Build your menu : va dans My menus et glisse ton nouveau module (entouré de vert) dans le menu.",
-  "Étape 5, Assign a shortcut : clique sur la touche et appuie sur une autre touche, ou garde F5 avec « Keep F5 ».",
-  "Étape 6 : Hub fermé, souris dans la vue 3D, appuie sur ta touche : ton menu s'ouvre et le guide se termine.",
-  "Essaie aussi « Skip step » sur les étapes 2 et 3, « Hide », et le bouton « ? » en haut du Hub : « Replay Getting started » relance le guide à zéro."]},
+  "Dans Blender 5.2 : Edit > Preferences > Get Extensions (même emplacement si ton Blender est en français), flèche en haut à droite > « Install from Disk… ». Choisis forgepie-0.1.0-beta.NNN.zip (NNN = le numéro de build du zip) et active l'extension (détail dans INSTALL.txt).",
+  "Installe de la même façon les deux modules officiels (Smart GTA Tools et Smart UV Tools). Attention : le bouton « Import » du Hub n'accepte que des fichiers .json de module personnalisé, jamais ces zips.",
+  "Ouvre le Hub avec F6 dans la vue 3D, ou avec le bouton ForgePIE de la barre latérale (N). La bulle « ? » en haut du Hub explique les mots module, composant et menu.",
+  "Ferme le Hub avec Échap, puis rouvre-le avec F6, y compris dans l'éditeur UV.",
+  "Ouvre l'onglet Diagnostics et clique sur « Copy report » : la première ligne contient « ForgePIE 0.1.0-beta.… ». Note ce numéro dans les Infos, en haut de l'onglet Les tests."]},
  {id:"A3",l:0,t:"Activer un module officiel",d:"Rendre un module disponible",s:[
-  "Dans Discover, repère le badge « Official » (Officiel) sur chaque carte : les trois modules sont installés (« Installed ») mais arrivés désactivés.",
+  "Dans Discover, repère le badge « Official » (Officiel) sur chaque carte : les deux modules sont installés (« Installed ») mais arrivés désactivés.",
   "Ouvre My modules : ils sont dans la sous-liste « Deactivated » (Désactivés). Active-en un avec son interrupteur, puis mets-le en favori (étoile).",
   "Dans la fiche d'un module de Discover, ouvre « Compatibility & support » (Compatibilité et assistance) : lis ce qui s'y trouve.",
   "Désactive-le : il repasse dans « Deactivated ». Réactive-le."]},
  {id:"A4",l:0,t:"Explorer Discover",d:"La bibliothèque de modules",s:[
   "Ouvre Discover (Découvrir).",
-  "Appuie sur / pour aller dans la recherche, tape « sollumz », puis Échap pour vider la recherche.",
+  "Appuie sur / pour aller dans la recherche, tape « smart », puis Échap pour vider la recherche.",
   "Change le tri, puis passe de la grille à la liste et reviens.",
   "Clique sur une carte pour ouvrir la fiche du module et parcours ses composants.",
   "Dans la fiche, essaie « Add to a menu › » (ou « Switch it on › » si le module est désactivé), puis Documentation. « Uninstall » ouvre Preferences > Get Extensions : ne désinstalle rien."]},
  {id:"A5",l:0,t:"Ton premier menu F5",d:"Remplir le menu « Default »",s:[
-  "Active au moins un module, puis ouvre My menus (Mes menus) : le menu « Default » (touche F5) est vide s'il n'a pas déjà reçu ton module du guide. Un bouton « Add « nom du module » » te propose le premier.",
+  "Active au moins un module, puis ouvre My menus (Mes menus) : le menu « Default » (touche F5) est vide au départ. Un bouton « Add « nom du module » » te propose le premier.",
   "Glisse un composant (par la poignée à gauche de son nom) dans un emplacement, ou clique sur « + ».",
   "Place un module entier (« + » sur sa ligne) : il devient un sous-menu.",
   "Hub fermé, souris dans la vue 3D, appuie sur F5 : ton menu circulaire s'affiche. Ouvre le sous-menu et lance une entrée."]},
@@ -281,67 +274,74 @@ const TESTS=[
   "Ouvre My menus (Mes menus) et clique sur « + New menu » (Nouveau menu) : le menu part vide.",
   "Renomme-le : double-clic sur son nom dans la liste ou dans l'en-tête, ou clic sur le crayon. Entrée valide, Échap annule.",
   "Essaie de valider un nom vide : le renommage doit être annulé."]},
- {id:"A7",l:1,t:"Donner un raccourci clavier",d:"Et provoquer un conflit de touche",s:[
+ {id:"A7",l:0,t:"Donner un raccourci clavier",d:"Et provoquer un conflit de touche",s:[
   "Clique sur la pastille de raccourci du menu, puis appuie sur une touche (par exemple F7). Échap annule la capture.",
   "Donne la même touche à un second menu : un message rouge doit apparaître en bas à gauche (avertissement, rien n'est bloqué).",
   "Efface un raccourci avec Retour arrière : la pastille repasse sur « Unassigned » (Non assigné)."]},
- {id:"A8",l:1,t:"Remplir un menu circulaire",d:"Placer des composants dans le PIE",s:[
+ {id:"A8",l:0,t:"Remplir un menu circulaire",d:"Placer des composants dans le PIE",s:[
   "Choisis un de tes menus en mode PIE.",
   "Dans la colonne de droite, utilise le filtre All / Modules / Components (Tous / Modules / Composants).",
   "Place un composant seul : clic sur « + », ou glisse-le jusqu'à « Drop here: slot N » (Déposer ici : emplacement N).",
   "Place un module entier : il devient un sous-menu.",
   "Sélectionne une entrée placée, regarde ses réglages (rouage), puis retire-la (croix)."]},
- {id:"A9",l:1,t:"Ajouter un opérateur natif",d:"N'importe quel outil de Blender",s:[
+ {id:"A9",l:0,t:"Ajouter un opérateur natif",d:"N'importe quel outil de Blender",s:[
   "Dans la colonne de droite de My menus, choisis le filtre Native (Natif).",
   "Choisis une zone ou cherche un mot, par exemple « dissolve ». Attention : plusieurs familles de Blender ont des opérateurs du même nom (par exemple « Select All ») : l'identifiant écrit dessous dit lequel c'est, et un opérateur d'une autre famille que ton mode ne fonctionnera pas (le PIE le grise).",
   "Place l'opérateur dans ton menu (clic sur « + » ou glisser).",
   "Dans My modules, retrouve-le dans le module « Native operators » (Opérateurs natifs)."]},
- {id:"A10",l:1,t:"Utiliser ton menu dans Blender",d:"Le vrai usage",s:[
+ {id:"A10",l:0,t:"Utiliser ton menu dans Blender",d:"Le vrai usage",s:[
   "Ferme le Hub, souris dans la vue 3D, appuie sur le raccourci de ton menu. Lance une entrée et vérifie son effet.",
   "Passe en Edit Mode puis en Object Mode : note les entrées grisées et si ça te paraît logique.",
-  "Lance un composant d'Optimizer (par exemple Clean Mesh) depuis ton menu : une fenêtre s'ouvre, valide ou annule."]},
- {id:"A11",l:1,t:"PIE ou liste classique",d:"Comparer les deux formes",s:[
+  "Ouvre ton menu circulaire plusieurs fois : les noms, la touche au centre et le sous-menu sont-ils lisibles ? Les cartes sont-elles bien réparties ?"]},
+ {id:"A11",l:0,t:"PIE ou liste classique",d:"Comparer les deux formes",s:[
   "Dans la colonne « Live preview » (Aperçu en direct), déplie « Menu settings » (Réglages du menu) et passe le TYPE à « Classic » (Classique) : tes entrées restent.",
   "Change « TEST AS » (TESTER EN) pour voir l'aperçu dans un autre contexte.",
   "Utilise le menu classique dans la vue 3D, puis repasse en PIE.",
   "Dans ta note : lequel préfères-tu, et pourquoi ?"]},
- {id:"A12",l:1,t:"Organiser, dupliquer, annuler",d:"Ranger un menu, revenir en arrière",s:[
+ {id:"A12",l:0,t:"Organiser, dupliquer, annuler",d:"Ranger un menu, revenir en arrière",s:[
   "Déplace une entrée en la glissant, ou avec Alt + flèches.",
   "Masque une entrée avec l'œil (touche H), puis réaffiche-la.",
   "Annule avec Ctrl+Z et rétablis avec Ctrl+Maj+Z.",
   "Duplique un menu (bouton à côté de la corbeille) et modifie la copie.",
   "Supprime l'original : premier clic sur la corbeille (elle passe au rouge), deuxième clic pour supprimer. Ctrl+Z le fait revenir."]},
- {id:"A13",l:2,t:"Ranger tes modules",d:"Dossiers, notes, vues",s:[
+ {id:"A13",l:0,t:"Ranger tes modules",d:"Dossiers, notes, vues",s:[
   "Dans My modules, utilise les filtres All / Official / Custom (Tous / Officiels / Perso) : vérifie les compteurs.",
   "Crée un dossier perso (« + » à côté de MY FOLDERS) et ranges-y un module.",
   "Ajoute une note à un module.",
   "Passe en vue grille, puis reviens en liste.",
   "Duplique un module avec l'icône de copie de sa ligne : une copie perso apparaît."]},
- {id:"A14",l:2,t:"Créer ton propre module",d:"Le test le plus complet",s:[
+ {id:"A14",l:0,t:"Créer ton propre module",d:"Le test le plus complet",s:[
   "Dans My modules, clique sur « New module » (Nouveau module) : nom, contexte (fixé à la création), icône, dossier, puis « Create & configure ». Une fenêtre d'édition s'ouvre par-dessus le Hub.",
   "Dans la colonne de droite « Available modules & components », clique sur « Native Blender Operator » (en haut de la colonne), cherche « Dissolve » et ajoute un opérateur : son rouage apparaît tout seul.",
   "Ouvre son rouage et change une option, puis ferme avec « Done » (Terminé).",
   "Rouvre ton module en double-cliquant sur sa ligne. Glisse ou active un composant d'un module officiel pour l'ajouter.",
   "Place ton module dans un de tes menus et lances-en une entrée."]},
- {id:"A15",l:2,t:"Exporter, supprimer et importer un module",d:"Partager tes modules",s:[
+ {id:"A15",l:0,t:"Exporter, supprimer et importer un module",d:"Partager tes modules",s:[
   "Sur la ligne de ton module perso, clique sur l'icône Exporter et enregistre le fichier.",
   "Clique sur la corbeille de sa ligne : premier clic, elle passe au rouge ; deuxième clic pour supprimer.",
   "Clique sur « Import » (Importer) et choisis ton fichier : le module revient, désactivé. Active-le.",
   "Facultatif : échange un module avec un autre testeur sur Discord."]},
- {id:"A16",l:2,t:"Optimizer",d:"Facultatif : nettoyer un projet",s:[
-  "Place Optimizer dans un menu (sous-menu) et lance « Clean Data » : lis la fenêtre avant de valider.",
-  "Lance « Clean Collision Data » et « Clean Mesh » : vérifie que chaque fenêtre propose Whole scene / Selection (Toute la scène / Sélection), puis ferme-la avec Cancel (Annuler).",
-  "Valide un nettoyage sur un objet de test et vérifie le résultat."]},
- {id:"A17",l:2,t:"Modules Sollumz",d:"Facultatif, si tu utilises Sollumz",s:[
-  "Installe Sollumz, puis place Sollumz MLO et Auto Sollumz dans un menu (étape A1 pour installer leurs zips).",
-  "Auto Sollumz : lance « Auto Drawable » sur un objet maillé, puis « Auto Collision » ou « Auto Box Collision ».",
-  "Sollumz MLO : essaie « Smart YTYP », « Create Portal » et « Flip Portal » (Create et Flip Portal fonctionnent aussi en Edit Mode).",
-  "Note ce qui t'a surpris ou paru lent."]},
- {id:"A18",l:2,t:"Diagnostics",d:"Facultatif, utile en cas de bug",s:[
-  "Ouvre la page Diagnostics et vérifie que le journal est lisible.",
-  "Clique sur « Copy report » (Copier le rapport) et colle-le sur Discord si quelque chose est cassé."]}
+ {id:"A18",l:0,t:"Diagnostics",d:"Utile en cas de bug",s:[
+  "Ouvre la page Diagnostics (dernier onglet en haut du Hub) et vérifie que le journal est lisible.",
+  "Clique sur « Copy report » (Copier le rapport) et colle-le sur Discord si quelque chose est cassé."]},
+ {id:"A16",l:1,t:"Smart UV Tools : marche à suivre",d:"Vérifier, ranger et couper des UV",s:[
+  "Prépare : active Smart UV Tools, place-le dans un de tes menus (sous-menu), passe en Object Mode et sélectionne un objet qui a une carte UV.",
+  "Smart Preview : lance-le depuis ton menu. Un panneau s'ouvre dans un coin de la vue 3D. Change le style, règle la taille du motif avec Size − / +, active « Show in UV editor » puis ouvre l'espace de travail UV Editing : le motif doit y apparaître aussi. Clique sur « Turn off » : tout doit revenir comme avant.",
+  "Smart Packing : sélectionne un ou plusieurs objets et lance-le. Lis la fenêtre (Keep 3D ratio ou Equal sizes, marge), valide, puis compare la couverture annoncée à celle de Blender. Note le temps si l'objet a beaucoup d'îlots.",
+  "Smart Quadrify : lance-le sur un maillage triangulé. Les bandes doivent devenir droites ; note ce qui n'a pas marché.",
+  "Smart Seams : lance-le sur un objet (ou des faces en Edit Mode), règle « Sharp angle », essaie « Straight ». Regarde où tombent les coutures et compte les îlots, puis relance Smart Packing.",
+  "Après chaque outil, annule avec Ctrl+Z et vérifie que le maillage revient.",
+  "Note ce qui t'a surpris, paru lent, ou ce que tu espérais en plus."]},
+ {id:"A17",l:1,t:"Smart GTA Tools : marche à suivre",d:"Optimiser, créer des drawables et un YTYP (Sollumz)",s:[
+  "Prépare : installe Sollumz, travaille sur une copie de ton projet, active Smart GTA Tools et place-le dans un de tes menus.",
+  "Smart Optimise : sélectionne des objets et lance-le. Lis la fenêtre (colonnes Scale et Modifiers, avertissements), clique sur « Fix » ou « Fix all », essaie « Optimised only », valide sur un objet de test, puis Ctrl+Z.",
+  "Smart Drawable : sélectionne un maillage simple et lance-le. Garde « One drawable for the selection », donne un nom au drawable, regarde les blocs Collision et Mesh, ouvre le menu « Collision material » (tape un mot pour chercher) et lis la colonne Avertissements (« Fix » ou « Fix all »). Clique sur « Create » et regarde le résultat dans l'outliner de Sollumz.",
+  "Smart Drawable avec plusieurs maillages : refais-le en décochant « One drawable for the selection », puis avec « One collision hierarchy » coché et décoché. Compare les deux résultats dans l'outliner, puis Ctrl+Z.",
+  "Smart YTYP : sélectionne des drawables (et une collision dont le nom contient _mlo.col), lance-le, coche Archetype / Entity in MLO ligne par ligne, clique sur « Create », puis Ctrl+Z.",
+  "Note ce qui t'a surpris ou paru lent."]}
 ];
-const KEY="forgepie_beta_v5",LBL={oui:"Oui",difficulte:"Oui avec difficulté",non:"Non"};
+const MIN={A1:10,A3:3,A4:3,A5:5,A6:3,A7:3,A8:5,A9:4,A10:3,A11:4,A12:5,A13:4,A14:10,A15:5,A18:2,A16:15,A17:20},REC={A16:"UV",A17:"GTA V / Sollumz"}; /* durées indicatives ; REC : réponse de « Quels modules t'intéressent ? » qui met le test en avant */
+const KEY="forgepie_beta_v7",LBL={oui:"Oui",difficulte:"Oui avec difficulté",non:"Non"};
 let S;try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
 S.a=S.a||{};S.g=S.g||{};S.open=S.open||{g:[0],t:[]};
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -355,20 +355,19 @@ const stateOf=t=>{const x=S.a[t.id];if(!x)return"";if(x.c.length===t.s.length)re
 /* Construction */
 function pills(name,vals,cur,cls){return vals.map(v=>`<label class="pill ${cls||""}"><input type="radio" name="${name}" value="${v[0]}"${String(cur)===String(v[0])?" checked":""}><span>${v[1]}</span></label>`).join("")}
 function testHTML(t){const x=act(t.id);return `<article class="test" id="t-${t.id}" data-id="${t.id}">
- <button class="th" aria-expanded="false" aria-controls="b-${t.id}"><span class="id">${t.id}</span><span class="tt"><b>${t.t}</b><span class="sr st"></span><small>${t.d}</small></span><span class="prog"><i></i></span>${CHEV}</button>
+ <button class="th" aria-expanded="false" aria-controls="b-${t.id}"><span class="id">${t.id}</span><span class="tt"><b>${t.t}</b><span class="sr st"></span><small>${t.d} · ~${MIN[t.id]} min</small></span>${REC[t.id]?'<span class="chip">Pour toi</span>':""}<span class="prog"><i></i></span>${CHEV}</button>
  <div class="collapse" id="b-${t.id}" inert><div class="inner"><div class="body">
   <ul class="steps">${t.s.map((s,k)=>`<li><label><input type="checkbox" data-k="${k}"${x.c.includes(k)?" checked":""}>${CHECK}<span class="tx">${s}</span></label></li>`).join("")}</ul>
   <fieldset class="f"><legend>Est-ce que ça a marché ?</legend><div class="row">${pills("ok-"+t.id,[["oui","Oui"],["difficulte","Oui avec difficulté"],["non","Non"]],x.ok)}</div></fieldset>
   <fieldset class="f"><legend>Difficulté</legend><div class="row num">${pills("df-"+t.id,[1,2,3,4,5].map(n=>[n,n]),x.diff,"num")}</div><p class="hint">1 : très facile, 5 : très difficile</p></fieldset>
-  <div class="f"><label class="lab" for="n-${t.id}">Blocage ou surprise</label><textarea id="n-${t.id}" data-f="note" placeholder="Ce qui t'a bloqué, étonné ou paru confus">${esc(x.note)}</textarea></div>
-  <div class="f" style="margin:0"><label class="lab" for="c-${t.id}">Capture ou vidéo (facultatif)</label><input type="text" id="c-${t.id}" data-f="cap" value="${esc(x.cap)}" placeholder="Un lien, ou poste le fichier sur Discord en citant ${t.id}"></div>
+  <div class="nf"><div class="f"><label class="lab" for="n-${t.id}">Blocage ou surprise</label><textarea id="n-${t.id}" data-f="note" placeholder="Ce qui t'a bloqué, étonné ou paru confus">${esc(x.note)}</textarea></div>
+  <div class="f" style="margin:0"><label class="lab" for="c-${t.id}">Capture ou vidéo (facultatif)</label><input type="text" id="c-${t.id}" data-f="cap" value="${esc(x.cap)}" placeholder="Un lien, ou poste le fichier sur Discord en citant ${t.id}"></div></div>
  </div></div></div></article>`}
 $("#groups").innerHTML=LEVELS.map((n,i)=>`<section class="grp" data-g="${i}">
- <button class="gh" aria-expanded="false"><h2>${n}</h2><span class="chip">Pour toi</span><span class="cnt"></span>${CHEV}</button>
- <div class="collapse" inert><div class="inner"><div class="tests">${TESTS.filter(t=>t.l===i).map(testHTML).join("")}</div></div></div></section>`).join("");
-$("#lvl").innerHTML=LEVELS.map((n,i)=>`<label><input type="radio" name="lvl" value="${i}"${S.lvl===i?" checked":""}><span>${n}</span></label>`).join("");
+ <button class="gh" aria-expanded="false"><h2>${n}</h2>${i?'<span class="chip">Facultatif</span>':""}<span class="cnt"></span>${CHEV}</button>
+ <div class="collapse" inert><div class="inner"><div class="tests">${TESTS.filter(t=>t.l===i).map(testHTML).join("")}</div>${i===0?'<div class="bar"><button class="btn" id="send1">Envoyer ma partie 1</button></div>':""}</div></div></section>`).join("");
 const N5=[1,2,3,4,5].map(n=>[n,n]),opts=a=>a.map(v=>[v,v]);
-const GP={lang:opts(["Français","English","Autre"]),conf:opts(["Windows","macOS","Linux"]),nav:opts(["Oui","En partie","Non"]),pie:opts(["Non","Ceux de Blender","Un add-on"]),util:N5,design:N5,ergo:N5,vocab:opts(["Oui","En partie","Non"]),tuto:opts(["Oui","En partie","Non"]),lock:opts(["M'a aidé","M'a gêné","Pas remarqué"]),read:opts(["Oui","Parfois trop petit","Non"]),after:opts(["Oui","Peut-être","Non"])};
+const GP={lang:opts(["Français","English","Autre"]),conf:opts(["Windows","macOS","Linux"]),nav:opts(["Oui","En partie","Non"]),pie:opts(["Non","Ceux de Blender","Un add-on"]),mods:opts(["GTA V / Sollumz","UV","Les deux","Aucun"]),util:N5,design:N5,ergo:N5,vocab:opts(["Oui","En partie","Non"]),read:opts(["Oui","Parfois trop petit","Non"]),after:opts(["Oui","Peut-être","Non"])};
 Object.entries(GP).forEach(([k,v])=>$("#g_"+k).innerHTML=pills("g-"+k,v,S.g[k],v===N5?"num":""));
 $$("[data-g]").forEach(e=>e.value=S.g[e.dataset.g]||"");
 
@@ -397,13 +396,15 @@ function refresh(){
   if(st)done++;
   const lab={done:"terminé",part:"commencé","":"pas testé"}[st]+(x&&x.diff?`, difficulté ${x.diff} sur 5`:"");
   $(".st",el).textContent=" ("+lab+")";$(`.sl[data-id=${t.id}]`).setAttribute("aria-label",`${t.id} ${t.t}, ${lab}`);
+  el.classList.toggle("sh",!!x&&(x.ok==="difficulte"||x.ok==="non"||!!x.note||!!x.cap)); /* blocage et capture : seulement si ça s'est mal passé */
+  el.classList.toggle("rec",!!REC[t.id]&&(S.g.mods==="Les deux"||S.g.mods===REC[t.id]));
   el.classList.toggle("done",st==="done");el.classList.toggle("part",st==="part");
   $(".prog i",el).style.width=(100*n/t.s.length)+"%";
   const sl=$(`.sl[data-id=${t.id}]`);sl.style.fill=x&&x.diff?DIFF[x.diff-1]:st?"#2A5F82":"";
   sl.classList.toggle("cur",el.classList.contains("open"))});
  LEVELS.forEach((_,i)=>{const g=$(`.grp[data-g="${i}"]`),ts=TESTS.filter(t=>t.l===i);
-  $(".cnt",g).textContent=`${ts.filter(stateOf).length} / ${ts.length} testés`;g.classList.toggle("rec",S.lvl===i)});
- [[3,["pseudo","blender","gpu","lang","conf","usage","pie"]],[4,["util","design","ergo","tuto","lock","tutostuck","vocab","read","nav","stuck","change","bug","want","after","redo"]]].forEach(([i,ks])=>
+  $(".cnt",g).textContent=`${ts.filter(stateOf).length} / ${ts.length} testés`});
+ [[3,["pseudo","blender","gpu","lang","conf","usage","pie","build","mods"]],[4,["util","design","ergo","vocab","read","nav","stuck","change","bug","want","after","redo"]]].forEach(([i,ks])=>
   $(".cnt",$(`.grp[data-g="${i}"]`)).textContent=`${ks.filter(k=>S.g[k]).length} / ${ks.length} renseignés`);
  $("#rn").textContent=done}
 function setOpen(el,on){el.classList.toggle("open",on);const b=el.querySelector(":scope>button");b.setAttribute("aria-expanded",on);el.querySelector(":scope>.collapse").inert=!on}
@@ -420,8 +421,8 @@ document.addEventListener("click",e=>{
 document.addEventListener("keydown",e=>{const sl=e.target.closest&&e.target.closest(".sl");if(sl&&(e.key==="Enter"||e.key===" ")){e.preventDefault();focusTest(sl.dataset.id)}});
 function focusTest(id){const t=TESTS.find(z=>z.id===id);openGroup(t.l,true);openTest(id,true);save();
  setTimeout(()=>$("#t-"+id).scrollIntoView({behavior:"smooth",block:"start"}),180)}
-/* Re-clic sur une réponse déjà choisie : on la décoche (pas pour le niveau) */
-document.addEventListener("click",e=>{const t=e.target;if(t.type!=="radio"||t.name==="lvl")return;
+/* Re-clic sur une réponse déjà choisie : on la décoche */
+document.addEventListener("click",e=>{const t=e.target;if(t.type!=="radio")return;
  if(t.dataset.was==="1"){t.checked=false;onIn({target:t})}
  $$(`input[name="${t.name}"]`).forEach(r=>r.dataset.was=r.checked?"1":"0")});
 $$("input[type=radio]").forEach(r=>r.dataset.was=r.checked?"1":"0");
@@ -432,19 +433,18 @@ function onIn(e){const t=e.target,art=t.closest(".test"),v=t.checked===false?"":
   else if(t.name&&t.name.startsWith("ok-"))x.ok=v;
   else if(t.name&&t.name.startsWith("df-"))x.diff=v;
   else if(t.dataset.f)x[t.dataset.f]=t.value}
- else if(t.name==="lvl"){S.lvl=+t.value;LEVELS.forEach((_,i)=>openGroup(i,i===S.lvl))}
  else if(t.name&&t.name.startsWith("g-"))S.g[t.name.slice(2)]=v;
  else if(t.dataset.g)S.g[t.dataset.g]=t.value;
  refresh();save()}
-const GL=[["pseudo","Pseudo"],["blender","Blender"],["gpu","GPU"],["lang","Langue de Blender"],["conf","Système"],["usage","Usage de Blender"],["pie","Menus PIE déjà utilisés"],["util","Utilité","/5"],["design","Design","/5"],["ergo","Ergonomie","/5"],["tuto","Guide de prise en main sans aide"],["lock","Onglets grisés pendant le guide"],["tutostuck","Étape du guide la plus floue"],["vocab","Vocabulaire clair"],["read","Hub lisible"],["nav","Repérage facile dans le Hub"],["stuck","Ce qui a posé problème"],["change","À changer en premier"],["bug","Bug le plus gênant"],["want","Ce qui manque"],["after","L'utiliserait après la bêta"],["redo","À refaire autrement"]];
+const GL=[["pseudo","Pseudo"],["blender","Blender"],["gpu","GPU"],["lang","Langue de Blender"],["conf","Système"],["usage","Usage de Blender"],["pie","Menus PIE déjà utilisés"],["build","Version de ForgePIE"],["mods","Modules qui l'intéressent"],["util","Utilité","/5"],["design","Design","/5"],["ergo","Ergonomie","/5"],["vocab","Vocabulaire clair"],["read","Hub lisible"],["nav","Repérage facile dans le Hub"],["stuck","Ce qui a posé problème"],["change","À changer en premier"],["bug","Bug le plus gênant"],["want","Ce qui manque"],["after","L'utiliserait après la bêta"],["redo","À refaire autrement"]];
 const HOOK="https://discord.com/api/webhooks/1567269652248395976/LYjFq6mREprKqH5Tz0ZvKbWBR7wyAiihycHMpNzTO_oVbnciU8nVUiQYPjke4Mzue8G7"; /* URL du webhook Discord du salon des bilans ; vide = le bouton Envoyer est caché. Publique par nature : à supprimer et recréer en cas de spam */
-if(!HOOK)$("#send").hidden=true;
+if(!HOOK)$("#send").hidden=$("#send1").hidden=true;
 function bilan(){
- let o=`Niveau : ${LEVELS[S.lvl]||"?"}\n`+GL.map(([k,l,u])=>`${l} : ${S.g[k]||"-"}${S.g[k]&&u?u:""}`).join("\n")+"\n\n";
+ let o=GL.map(([k,l,u])=>`${l} : ${S.g[k]||"-"}${S.g[k]&&u?u:""}`).join("\n")+"\n\n";
  TESTS.forEach(t=>{const x=S.a[t.id];if(!stateOf(t))return;
   o+=`== ${t.id} ${t.t} ==\nÉtapes : ${x.c.length}/${t.s.length}\nRéussie : ${LBL[x.ok]||"-"}\nDifficulté : ${x.diff||"-"}/5\nBlocage ou surprise : ${x.note||"-"}\nCapture : ${x.cap||"-"}\n\n`});
  /* Ligne lisible par un script : le bilan complet en JSON compact, à agréger plus tard */
- o+="JSON : "+JSON.stringify({form:4,lvl:LEVELS[S.lvl]||null,g:S.g,a:Object.fromEntries(TESTS.filter(stateOf).map(t=>{const x=S.a[t.id];return[t.id,{etapes:x.c.length,ok:x.ok,diff:x.diff,note:x.note,cap:x.cap}]}))})+"\n";
+ o+="JSON : "+JSON.stringify({form:5,g:S.g,a:Object.fromEntries(TESTS.filter(stateOf).map(t=>{const x=S.a[t.id];return[t.id,{etapes:x.c.length,ok:x.ok,diff:x.diff,note:x.note,cap:x.cap}]}))})+"\n";
  return o}
 /* Bouton : texte, action ; remet le libellé après 2,2 s */
 function wire(sel,label,act){const b=$(sel);b.onclick=async()=>{
@@ -452,12 +452,16 @@ function wire(sel,label,act){const b=$(sel);b.onclick=async()=>{
  setTimeout(()=>b.textContent=label,2200)}}
 wire("#copy","Copier mon bilan",async()=>{try{await navigator.clipboard.writeText(bilan())}catch(e){throw Error("Copie impossible")}return"Bilan copié"});
 /* Envoi : résumé court dans le salon + bilan complet en fichier joint (le texte d'un message est limité à 2000 caractères) */
-wire("#send","Envoyer mon bilan",async()=>{
+const envoi=part=>async()=>{
  const g=S.g,n=TESTS.filter(stateOf).length,fd=new FormData();
- fd.append("payload_json",JSON.stringify({username:"ForgePIE bêta",allowed_mentions:{parse:[]},content:`**${g.pseudo||"Bilan anonyme"}** : ${n}/${TESTS.length} tests, utilité ${g.util||"-"}/5, design ${g.design||"-"}/5, ergonomie ${g.ergo||"-"}/5`.slice(0,1900)}));
+ fd.append("payload_json",JSON.stringify({username:"ForgePIE bêta",allowed_mentions:{parse:[]},content:`**${g.pseudo||"Bilan anonyme"}**${part?" (partie 1 seulement)":""} : ${n}/${TESTS.length} tests, utilité ${g.util||"-"}/5, design ${g.design||"-"}/5, ergonomie ${g.ergo||"-"}/5`.slice(0,1900)}));
  fd.append("files[0]",new Blob([bilan()],{type:"text/plain"}),"bilan-"+Date.now().toString(36)+".txt");
  let r;try{r=await fetch(HOOK,{method:"POST",body:fd})}catch(e){throw Error("Envoi impossible : copie le bilan")}
- if(!r.ok)throw Error("Envoi refusé : copie le bilan");return"Bilan envoyé, merci !"});
+ if(!r.ok)throw Error("Envoi refusé : copie le bilan");return"Bilan envoyé, merci !"};
+wire("#send","Envoyer mon bilan",envoi(0));wire("#send1","Envoyer ma partie 1",envoi(1));
+/* Progression : fichier à enregistrer puis à reprendre (le navigateur peut tout perdre) */
+$("#dl").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:"application/json"}));a.download="forgepie-progression.json";a.click()};
+$("#ld").onchange=async e=>{const l=$("#ldl span");try{const o=JSON.parse(await e.target.files[0].text());if(!o||typeof o.a!=="object"||typeof o.g!=="object")throw 0;localStorage.setItem(KEY,JSON.stringify(o));location.reload()}catch(x){l.textContent="Fichier illisible";setTimeout(()=>l.textContent="Reprendre une progression",2200)}};
 $("#reset").onclick=()=>{if(confirm("Effacer toute ta progression sur cet appareil ?")){try{localStorage.removeItem(KEY)}catch(e){}location.reload()}};
 refresh();
 </script>
