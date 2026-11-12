@@ -173,7 +173,7 @@ textarea:focus,input[type=text]:focus{outline:none;border-color:var(--cy);box-sh
   </div>
   <div class="info">
    <h2>Télécharger la bêta</h2>
-   <p>Un seul zip : ForgePIE, ses deux modules officiels (Smart GTA Tools et Smart UV Tools) et le fichier INSTALL.txt. Dézippe-le, puis suis INSTALL.txt (ou le test A1).</p>
+   <p>Un seul dossier : ForgePIE, ses modules officiels (Smart GTA Tools, Smart GTA5 Import, Smart UV Tools et Smart Select Tools) et le fichier INSTALL.txt. Dézippe-le, puis suis INSTALL.txt (ou le test A1).</p>
    <a class="btn pri" style="display:inline-block;text-decoration:none" href="https://github.com/Ender501/forgepie-beta/releases/latest/download/forgepie-beta.zip" download>Télécharger forgepie-beta.zip</a>
   </div>
   <div class="info">
@@ -250,12 +250,12 @@ const LEVELS=["Partie 1 · Créer tes menus et comprendre ForgePIE","Partie 2 ·
 const TESTS=[
  {id:"A1",l:0,t:"Installer et ouvrir le Hub",d:"Premier contact avec l'outil",s:[
   "Dans Blender 5.2 : Edit > Preferences > Get Extensions (même emplacement si ton Blender est en français), flèche en haut à droite > « Install from Disk… ». Choisis forgepie-0.1.0-beta.NNN.zip (NNN = le numéro de build du zip) et active l'extension (détail dans INSTALL.txt).",
-  "Installe de la même façon les deux modules officiels (Smart GTA Tools et Smart UV Tools). Attention : le bouton « Import » du Hub n'accepte que des fichiers .json de module personnalisé, jamais ces zips.",
+  "Installe de la même façon les modules officiels (les autres zips du dossier : Smart GTA Tools, Smart GTA5 Import, Smart UV Tools, Smart Select Tools). Attention : le bouton « Import » du Hub n'accepte que des fichiers .json de module personnalisé, jamais ces zips.",
   "Ouvre le Hub avec F6 dans la vue 3D, ou avec le bouton ForgePIE de la barre latérale (N). La bulle « ? » en haut du Hub explique les mots module, composant et menu.",
   "Ferme le Hub avec Échap, puis rouvre-le avec F6, y compris dans l'éditeur UV.",
   "Ouvre l'onglet Diagnostics et clique sur « Copy report » : la première ligne contient « ForgePIE 0.1.0-beta.… ». Note ce numéro dans les Infos, en haut de l'onglet Les tests."]},
  {id:"A3",l:0,t:"Activer un module officiel",d:"Rendre un module disponible",s:[
-  "Dans Discover, repère le badge « Official » (Officiel) sur chaque carte : les deux modules sont installés (« Installed ») mais arrivés désactivés.",
+  "Dans Discover, repère le badge « Official » (Officiel) sur chaque carte : les modules sont installés (« Installed ») mais arrivés désactivés.",
   "Ouvre My modules : ils sont dans la sous-liste « Deactivated » (Désactivés). Active-en un avec son interrupteur, puis mets-le en favori (étoile).",
   "Dans la fiche d'un module de Discover, ouvre « Compatibility & support » (Compatibilité et assistance) : lis ce qui s'y trouve.",
   "Désactive-le : il repasse dans « Deactivated ». Réactive-le."]},
@@ -338,9 +338,24 @@ const TESTS=[
   "Smart Drawable : sélectionne un maillage simple et lance-le. Garde « One drawable for the selection », donne un nom au drawable, regarde les blocs Collision et Mesh, ouvre le menu « Collision material » (tape un mot pour chercher) et lis la colonne Avertissements (« Fix » ou « Fix all »). Clique sur « Create » et regarde le résultat dans l'outliner de Sollumz.",
   "Smart Drawable avec plusieurs maillages : refais-le en décochant « One drawable for the selection », puis avec « One collision hierarchy » coché et décoché. Compare les deux résultats dans l'outliner, puis Ctrl+Z.",
   "Smart YTYP : sélectionne des drawables (et une collision dont le nom contient _mlo.col), lance-le, coche Archetype / Entity in MLO ligne par ligne, clique sur « Create », puis Ctrl+Z.",
-  "Note ce qui t'a surpris ou paru lent."]}
+  "Note ce qui t'a surpris ou paru lent."]},
+ {id:"A19",l:1,t:"Smart GTA5 Import et barre rapide : marche à suivre",d:"Importer un asset GTA V par son nom, depuis une barre d'icônes",s:[
+  "Prépare : installe Sollumz, active Smart GTA5 Import et ForgePIE, travaille sur une copie de ton projet. Il te faut ton dossier GTA V, celui de CodeWalker et un dossier d'export.",
+  "Fast RPF importer : lance-le depuis ton menu, ouvre « Path Setup » et renseigne les trois dossiers (une pastille te dit lequel est faux). Tape le nom d'un asset (par exemple prop_bench_01), regarde les options (Merge points, Clean shading, Import textures, « Save in my folder », « On cursor ») puis clique sur « Import asset ». Vérifie l'objet, ses matériaux, ses textures et sa collision.",
+  "« On cursor » activé : l'objet arrive sur le curseur 3D. Désactivé : il reste là où l'import le pose. « Save in my folder » : les textures vont à plat dans ton dossier, sans sous-dossiers.",
+  "Fast ped importer : tape un nom de ped, coche des composants, choisis une variante de texture, importe. Lis aussi le menu « Check before you use it ».",
+  "Barre rapide : dans l'en-tête du Fast RPF importer, clique sur « Add to quick bar ». Une rangée d'icônes apparaît dans la vue 3D : déplace-la par sa poignée, ajoute-en d'autres, clique sur l'icône pour ouvrir le formulaire court.",
+  "Formulaire court : tape un nom, règle les puces Collisions, Textures, On cursor, puis « Import asset » (il reste ouvert pour l'asset suivant). Déplace-le par son titre et continue de travailler dans la vue 3D. « Advanced » ouvre le grand formulaire par-dessus : tes réglages et le nom y sont déjà, et ce que tu changes là-bas se retrouve dans le court, même si tu n'as rien importé.",
+  "Ferme et rouvre Blender : tes réglages d'import sont-ils restés ? Note ce qui t'a surpris, paru lent ou ce qui manque."]},
+ {id:"A20",l:1,t:"Smart Select Tools : marche à suivre",d:"Sélectionner des arêtes et des faces par motif ou par forme",s:[
+  "Prépare : active Smart Select Tools, place-le dans un de tes menus, passe en Edit Mode sur un maillage avec des boucles d'arêtes (un cylindre ou un quadrillage fait l'affaire).",
+  "Panneau Smart Select : lance-le. Ouvre un mode dans l'accordéon, épingle ceux que tu utilises le plus (étoile) et vérifie qu'ils restent en haut après fermeture. « Done » termine en une seule étape d'annulation (Ctrl+Z).",
+  "Skip : sélectionne une boucle ou un anneau d'arêtes, lance Skip, change « Every » et le décalage (Start at). Essaie le mode Random : une part des arêtes, une graine et « Reroll » ; deux voisines ne doivent jamais être prises ensemble.",
+  "Similar : active une face, lance Similar. Les faces de même forme doivent être choisies quelle que soit leur taille ou leur rotation. Essaie « Same size », « Same orientation », la tolérance et la portée (objet ou sélection).",
+  "Les autres modes (triangles, quads, n-gons…) : place-les seuls dans un menu et lance-les : Blender garde sa fenêtre « Adjust Last Operation ».",
+  "Note ce qui t'a surpris, paru lent ou ce qui manque."]}
 ];
-const MIN={A1:10,A3:3,A4:3,A5:5,A6:3,A7:3,A8:5,A9:4,A10:3,A11:4,A12:5,A13:4,A14:10,A15:5,A18:2,A16:15,A17:20},REC={A16:"UV",A17:"GTA V / Sollumz"}; /* durées indicatives ; REC : réponse de « Quels modules t'intéressent ? » qui met le test en avant */
+const MIN={A1:10,A3:3,A4:3,A5:5,A6:3,A7:3,A8:5,A9:4,A10:3,A11:4,A12:5,A13:4,A14:10,A15:5,A18:2,A16:15,A17:20,A19:20,A20:10},REC={A16:"UV",A17:"GTA V / Sollumz",A19:"GTA V / Sollumz"}; /* durées indicatives ; REC : réponse de « Quels modules t'intéressent ? » qui met le test en avant */
 const KEY="forgepie_beta_v7",LBL={oui:"Oui",difficulte:"Oui avec difficulté",non:"Non"};
 let S;try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
 S.a=S.a||{};S.g=S.g||{};S.open=S.open||{g:[0],t:[]};
